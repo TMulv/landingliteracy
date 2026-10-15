@@ -106,7 +106,7 @@ function drawInk(root) {
   });
   tiles.removeAttribute("aria-hidden");
   tiles.setAttribute("role", "group");
-  tiles.setAttribute("aria-label", "The word lands in five sound boxes. Each tile can be dragged, or moved with arrow keys.");
+  tiles.setAttribute("aria-label", "The word lands in five sound boxes, one box per sound.");
 
   prepInk(hero);
 
