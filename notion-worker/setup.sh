@@ -35,11 +35,13 @@ say "Deploying"
 if [ -f workers.json ]; then ntn workers deploy --yes; else ntn workers deploy --name landing-literacy-leads --yes; fi
 
 say "Connect the worker to Notion"
-cat <<'MSG'
-Claude already made a Notion connection called "Landing Literacy website" and gave it
-access to the Landing Literacy page. Open it here, copy its secret, and paste it below:
-  https://app.notion.com/developers/connections
-(The secret won't show as you paste. That's normal.)
+CONN_URL="https://app.notion.com/developers/connections/3fa8153c-8a3e-8168-928a-0027b30253c7?spaceId=$WORKSPACE_ID"
+open "$CONN_URL" 2>/dev/null || true
+cat <<MSG
+Opening the "Landing Literacy website" connection in your browser:
+  $CONN_URL
+Under "API token", click the copy icon, then paste it here and press Return.
+(It won't show as you paste. That's normal.)
 MSG
 printf "Secret: "
 read -rs TOKEN </dev/tty
