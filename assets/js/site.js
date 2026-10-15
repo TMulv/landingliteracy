@@ -183,9 +183,8 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     tiles.classList.remove("is-landed");
     tileEls.forEach(t => { t.style.transform = ""; });
     prepInk(hero);
-    if (reduceMotion) { land(); return; }
     void tiles.offsetWidth;
-    tiles.classList.add("is-dropping");
+    tiles.classList.add("is-dropping"); // Reduce Motion turns this into a fade in the CSS
     const last = tileEls[tileEls.length - 1];
     last.addEventListener("animationend", function done() {
       last.removeEventListener("animationend", done);
@@ -193,7 +192,15 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     });
   }
 
-  drop();
+  // Wait until the page is actually on screen, so a tab opened in the background
+  // doesn't play the drop where nobody can see it.
+  const start = () => requestAnimationFrame(drop);
+  if (document.visibilityState === "visible") start();
+  else document.addEventListener("visibilitychange", function shown() {
+    if (document.visibilityState !== "visible") return;
+    document.removeEventListener("visibilitychange", shown);
+    start();
+  });
   $("#replay").addEventListener("click", drop);
   // Tapping the word drops it again (the replay link is hidden on phones).
   tiles.addEventListener("click", () => { if (!tiles.classList.contains("is-dropping")) drop(); });

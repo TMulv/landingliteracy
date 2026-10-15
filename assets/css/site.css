@@ -505,6 +505,10 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--re
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  *:not(.tile), *::before, *::after { animation: none !important; transition: none !important; }
+  /* Reduce Motion still gets the tiles, one by one: a fade in place, no falling. */
+  .js .tiles:not(.is-landed) .tile { transform: none; }
+  .tiles.is-dropping .tile { animation-name: tile-fade; animation-duration: 0.5s; animation-timing-function: ease; }
 }
+@keyframes tile-fade { from { opacity: 0; } to { opacity: 1; } }
 .fit-get p { margin: 0 !important; font-size: 1rem !important; color: var(--ink) !important; }
