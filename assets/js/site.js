@@ -80,6 +80,67 @@ function drawInk(root) {
   $$(".mk path", root).forEach(p => { p.style.strokeDashoffset = "0"; });
 }
 
+// Hand-drawn loops around a phrase. Each loop is drawn from the phrase's real size, so it
+// clears the first and last letters at any width (a stretched ellipse pinches at the ends
+// and cuts through them). Long, flat loops with round ends, the way people circle words.
+function shapeLoops(root = document) {
+  $$("svg.mk-circle", root).forEach(svg => {
+    const el = svg.parentElement;
+    const w = el.offsetWidth, h = el.offsetHeight;
+    if (!w || !h) return;
+    const fs = parseFloat(getComputedStyle(el).fontSize);
+
+    // Find the baseline, then box the ink: ascenders above it, descenders below.
+    const probe = document.createElement("span");
+    probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+    el.insertBefore(probe, svg);
+    const base = probe.offsetTop;
+    probe.remove();
+
+    const inkTop = base - 0.76 * fs, inkBot = base + 0.2 * fs;
+    const pad = 0.15 * fs;
+    const T = inkTop - pad, B = inkBot + pad, cy = (T + B) / 2;
+    const R = (B - T) / 2, hh = (inkBot - inkTop) / 2;
+    // Oval ends (wider than tall). Each end starts as far in as it can while still
+    // clearing the corner of the first or last letter.
+    const rxL = R * 1.5, rxR = R * 1.6;
+    const room = Math.sqrt(Math.max(0, 1 - (hh / (R - 0.05 * fs)) ** 2));
+    let L = rxL * room, X = w - rxR * room;
+    if (X < L) L = X = w / 2;
+    const span = X - L, k = 0.5523, bowT = 0.03 * fs, bowB = 0.07 * fs;
+    const tail = Math.min(0.2 * span + 0.3 * fs, 1.3 * fs);
+    const f = n => n.toFixed(1);
+    const pt = (x, y) => `${f(x)} ${f(y)}`;
+    const d = [
+      `M${pt(L + 0.05 * span, T + 0.05 * fs)}`,
+      `C${pt(L + 0.4 * span, T - bowT)} ${pt(X - 0.25 * span, T - bowT * 0.5)} ${pt(X, T)}`,
+      `C${pt(X + k * rxR, T)} ${pt(X + rxR, cy - k * R)} ${pt(X + rxR, cy)}`,
+      `C${pt(X + rxR, cy + k * R)} ${pt(X + k * rxR, B)} ${pt(X, B)}`,
+      `C${pt(X - 0.3 * span, B + bowB)} ${pt(L + 0.3 * span, B + bowB * 0.7)} ${pt(L, B)}`,
+      `C${pt(L - k * rxL, B)} ${pt(L - rxL, cy + k * R)} ${pt(L - rxL, cy)}`,
+      `C${pt(L - rxL, cy - k * R)} ${pt(L - k * rxL, T)} ${pt(L, T)}`,
+      `C${pt(L + tail * 0.35, T - 0.01 * fs)} ${pt(L + tail * 0.7, T - 0.02 * fs)} ${pt(L + tail, T - 0.015 * fs)}`
+    ].join(" ");
+
+    svg.setAttribute("viewBox", `0 0 ${f(w)} ${f(h)}`);
+    const p = svg.querySelector("path");
+    p.setAttribute("d", d);
+    p.style.strokeWidth = `${Math.max(2.2, Math.min(3.6, fs * 0.055)).toFixed(2)}px`;
+    // Keep the draw-in state: drawn loops stay drawn, pending ones stay hidden.
+    const len = Math.ceil(p.getTotalLength()) + 2;
+    const drawn = p.style.strokeDashoffset === "0";
+    p.style.transition = "none";
+    p.style.strokeDasharray = `${len}`;
+    p.style.strokeDashoffset = drawn ? "0" : `${len}`;
+    p.getBoundingClientRect();
+    p.style.transition = "";
+  });
+}
+shapeLoops();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => shapeLoops());
+let loopTimer;
+window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = setTimeout(() => shapeLoops(), 150); });
+
 (function annotations() {
   const targets = $$("[data-draw]").filter(el => !el.closest(".hero"));
   targets.forEach(prepInk);
@@ -101,7 +162,6 @@ function drawInk(root) {
   tileEls.forEach((t, i) => {
     t.style.setProperty("--i", i);
     t.parentElement.dataset.sound = t.dataset.sound;
-    t.tabIndex = 0;
     t.setAttribute("aria-label", `Letter ${t.textContent}, sound ${t.dataset.sound}`);
   });
   tiles.removeAttribute("aria-hidden");
@@ -134,66 +194,8 @@ function drawInk(root) {
 
   drop();
   $("#replay").addEventListener("click", drop);
-
-  // Drag and snap back
-  tileEls.forEach(tile => {
-    let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, moved = false;
-
-    tile.addEventListener("pointerdown", e => {
-      if (!tiles.classList.contains("is-landed")) return;
-      dragging = true; moved = false;
-      startX = e.clientX; startY = e.clientY; dx = 0; dy = 0;
-      tile.setPointerCapture(e.pointerId);
-      tile.classList.remove("is-returning", "is-hop");
-      tile.classList.add("is-dragging");
-    });
-    tile.addEventListener("pointermove", e => {
-      if (!dragging) return;
-      dx = e.clientX - startX; dy = e.clientY - startY;
-      if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
-      tile.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-14, Math.min(14, dx * 0.06))}deg)`;
-    });
-    const release = () => {
-      if (!dragging) return;
-      dragging = false;
-      tile.classList.remove("is-dragging");
-      tile.classList.add("is-returning");
-      tile.style.transform = "";
-      if (!moved) hop(tile);
-    };
-    tile.addEventListener("pointerup", release);
-    tile.addEventListener("pointercancel", release);
-    tile.addEventListener("transitionend", () => tile.classList.remove("is-returning"));
-
-    // Keyboard: arrows nudge, Enter/Space hops, Escape snaps back
-    let kx = 0, ky = 0, snapTimer;
-    tile.addEventListener("keydown", e => {
-      const step = 14;
-      const map = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
-      if (map[e.key]) {
-        e.preventDefault();
-        kx += map[e.key][0]; ky += map[e.key][1];
-        tile.classList.remove("is-returning");
-        tile.style.transform = `translate(${kx}px, ${ky}px)`;
-        clearTimeout(snapTimer);
-        snapTimer = setTimeout(snap, 900);
-      } else if (e.key === "Escape") {
-        snap();
-      } else if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        hop(tile);
-      }
-    });
-    function snap() { kx = 0; ky = 0; tile.classList.add("is-returning"); tile.style.transform = ""; }
-  });
-
-  function hop(tile) {
-    if (reduceMotion) return;
-    tile.classList.remove("is-hop");
-    void tile.offsetWidth;
-    tile.classList.add("is-hop");
-    tile.addEventListener("animationend", () => tile.classList.remove("is-hop"), { once: true });
-  }
+  // Tapping the word drops it again (the replay link is hidden on phones).
+  tiles.addEventListener("click", () => { if (!tiles.classList.contains("is-dropping")) drop(); });
 })();
 
 /* ---------- Fit check ---------- */
@@ -416,6 +418,7 @@ const VERDICTS = {
 
     qWrap.hidden = true;
     result.hidden = false;
+    shapeLoops(result);
     prepInk(result);
     requestAnimationFrame(() => setTimeout(() => drawInk(result), 60));
     result.focus({ preventScroll: true });

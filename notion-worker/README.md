@@ -16,6 +16,6 @@
 
 ## Changing the worker later
 
-Edit `index.ts` here, copy it to `~/landing-literacy-leads/src/index.ts`, then run `ntn workers deploy` from that folder.
+Edit `index.ts` here and push, then re-run the setup command above. It pulls the latest `index.ts`, redeploys, and skips the secret prompt once the worker is connected.
 
 Debugging: `ntn workers runs list` and `ntn workers runs logs <run-id>`.

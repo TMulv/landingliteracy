@@ -35,21 +35,25 @@ say "Deploying"
 if [ -f workers.json ]; then ntn workers deploy --yes; else ntn workers deploy --name landing-literacy-leads --yes; fi
 
 say "Connect the worker to Notion"
-CONN_URL="https://app.notion.com/developers/connections/3fa8153c-8a3e-8168-928a-0027b30253c7?spaceId=$WORKSPACE_ID"
-open "$CONN_URL" 2>/dev/null || true
-cat <<MSG
+if ntn workers env list 2>/dev/null | grep -q "NOTION_API_TOKEN"; then
+  echo "Already connected (NOTION_API_TOKEN is set). Skipping."
+else
+  CONN_URL="https://app.notion.com/developers/connections/3fa8153c-8a3e-8168-928a-0027b30253c7?spaceId=$WORKSPACE_ID"
+  open "$CONN_URL" 2>/dev/null || true
+  cat <<MSG
 Opening the "Landing Literacy website" connection in your browser:
   $CONN_URL
 Under "API token", click the copy icon, then paste it here and press Return.
 (It won't show as you paste. That's normal.)
 MSG
-printf "Secret: "
-read -rs TOKEN </dev/tty
-echo
-if [ -z "$TOKEN" ]; then echo "No secret entered. Run this script again when you have it."; exit 1; fi
-ntn workers env set "NOTION_API_TOKEN=$TOKEN" >/dev/null
-unset TOKEN
-ntn workers deploy --yes >/dev/null
+  printf "Secret: "
+  read -rs TOKEN </dev/tty
+  echo
+  if [ -z "$TOKEN" ]; then echo "No secret entered. Run this script again when you have it."; exit 1; fi
+  ntn workers env set "NOTION_API_TOKEN=$TOKEN" >/dev/null
+  unset TOKEN
+  ntn workers deploy --yes >/dev/null
+fi
 
 say "Your webhook URL"
 URL=$(ntn workers webhooks list --plain | tr '\t' '\n' | grep -m1 '^https://.*websiteLead' || true)
