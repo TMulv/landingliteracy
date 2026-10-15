@@ -302,6 +302,7 @@ section[id], .fit-result, .sent { scroll-margin-top: 84px; }
 .path-note { display: block; font-family: var(--hand); color: var(--blue); font-size: 1rem; margin: 8px 0 10px; transform: rotate(-3deg); }
 .cred-list { list-style: none; display: grid; gap: 10px; }
 .cred-list li { position: relative; padding-left: 22px; }
+.about-link { margin: 28px 0 0; }
 .cred-list li::before { content: ""; position: absolute; left: 0; top: 0.42em; width: 11px; height: 6px; border-left: 2.4px solid var(--blue); border-bottom: 2.4px solid var(--blue); transform: rotate(-45deg); }
 
 /* Resources */

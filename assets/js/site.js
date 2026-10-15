@@ -10,7 +10,7 @@ const CONFIG = {
   // Optional booking link (Calendly, etc.)
   bookingUrl: "",
   // Optional LinkedIn profile URL
-  linkedinUrl: "",
+  linkedinUrl: "https://www.linkedin.com/in/carly-mulvey-norman-752683bb/",
   // Optional reply promise shown beside the form, e.g. "within two school days"
   replyTime: "",
   // When Carly has outcome data she's cleared to share, put one sentence here.
@@ -31,8 +31,9 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const alt = $("#contact-alt");
   const parts = [];
   if (CONFIG.email) parts.push(`Prefer email? <a href="mailto:${CONFIG.email}">${CONFIG.email}</a>`);
-  if (CONFIG.bookingUrl) parts.push(`Or <a href="${CONFIG.bookingUrl}" target="_blank" rel="noopener">book a time</a> directly.`);
-  if (parts.length) { alt.innerHTML = parts.join(". "); alt.hidden = false; }
+  if (CONFIG.bookingUrl) parts.push(`Or <a href="${CONFIG.bookingUrl}" target="_blank" rel="noopener">book a time</a> directly`);
+  if (CONFIG.linkedinUrl) parts.push(`Or connect with Carly on <a href="${CONFIG.linkedinUrl}" target="_blank" rel="noopener">LinkedIn</a>`);
+  if (parts.length) { alt.innerHTML = parts.join("<br>"); alt.hidden = false; }
 
   if (CONFIG.replyTime) $("#reply-note").textContent = `You'll hear back from Carly ${CONFIG.replyTime}.`;
 
