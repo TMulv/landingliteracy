@@ -4,7 +4,7 @@
 const CONFIG = {
   // Notion Worker webhook URL. Inquiries and resource downloads both post here and land in
   // the "Website Leads" database in Notion. See notion-worker/README.md.
-  leadsEndpoint: "",
+  leadsEndpoint: "https://34716027454.webhook.notionusercontent.com/webhooks/worker/1728153c-8a3e-810c-95ae-000316248c6f/01a14117-0402-7ca8-ad52-1eca6521b018/zZLutYCCwnqwF6t0/websiteLead",
   // Carly's public email. Shown in the contact section and footer.
   email: "carly@landingliteracy.com",
   // Optional booking link (Calendly, etc.)
