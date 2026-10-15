@@ -2,12 +2,11 @@
 
 /* ---------- Settings: fill these in before launch ---------- */
 const CONFIG = {
-  // Formspree (or similar) endpoint for the "Start a conversation" form, e.g. "https://formspree.io/f/abcdwxyz"
-  inquiryEndpoint: "",
-  // Endpoint that collects emails for resource downloads. Can be the same as inquiryEndpoint.
-  resourceEndpoint: "",
-  // Carly's public email, e.g. "carly@landingliteracy.com". Shown in the contact section and footer.
-  email: "",
+  // Notion Worker webhook URL. Inquiries and resource downloads both post here and land in
+  // the "Website Leads" database in Notion. See notion-worker/README.md.
+  leadsEndpoint: "",
+  // Carly's public email. Shown in the contact section and footer.
+  email: "carly@landingliteracy.com",
   // Optional booking link (Calendly, etc.)
   bookingUrl: "",
   // Optional LinkedIn profile URL
@@ -26,7 +25,7 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
 /* ---------- Config-driven bits ---------- */
 (function applyConfig() {
-  const formsLive = Boolean(CONFIG.inquiryEndpoint && CONFIG.resourceEndpoint);
+  const formsLive = Boolean(CONFIG.leadsEndpoint);
   if (!formsLive) $("#preview-bar").hidden = false;
 
   const alt = $("#contact-alt");
@@ -458,13 +457,24 @@ function validate(form) {
   return first;
 }
 
+// Sends a submission to the Notion Worker webhook. The webhook doesn't send CORS headers,
+// so the request goes out as a simple "no-cors" POST: it arrives, but the browser can't read
+// the reply. A network failure still throws, which the forms report.
 async function post(endpoint, data) {
+  const payload = {};
+  data.forEach((value, key) => { payload[key] = value; });
   if (!endpoint) {
-    console.warn("[Landing Literacy] Form endpoint not set in CONFIG. Submission not sent:", Object.fromEntries(data));
+    console.warn("[Landing Literacy] leadsEndpoint not set in CONFIG. Submission not sent:", payload);
     return { ok: true, preview: true };
   }
-  const res = await fetch(endpoint, { method: "POST", body: data, headers: { Accept: "application/json" } });
-  return { ok: res.ok };
+  await fetch(endpoint, {
+    method: "POST",
+    mode: "no-cors",
+    keepalive: true,
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
+    body: JSON.stringify(payload)
+  });
+  return { ok: true };
 }
 
 /* ---------- Inquiry form ---------- */
@@ -488,7 +498,8 @@ async function post(endpoint, data) {
     data.set("grades", $$('input[name="grades"]:checked', form).map(c => c.value).join(", "));
     data.set("services", $$('input[name="services"]:checked', form).map(c => c.value).join(", "));
     try {
-      const r = await post(CONFIG.inquiryEndpoint, data);
+      data.append("source", "inquiry");
+      const r = await post(CONFIG.leadsEndpoint, data);
       if (!r.ok) throw new Error("bad response");
       form.hidden = true;
       const sent = $("#inquiry-sent");
@@ -554,7 +565,7 @@ async function post(endpoint, data) {
     data.append("_subject", `Resource download: ${data.get("resource")}`);
     data.append("source", "resource-download");
     try {
-      const r = await post(CONFIG.resourceEndpoint, data);
+      const r = await post(CONFIG.leadsEndpoint, data);
       if (!r.ok) throw new Error("bad response");
       remember();
       gate.close();

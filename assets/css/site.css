@@ -287,7 +287,12 @@ section[id], .fit-result, .sent { scroll-margin-top: 84px; }
 .photo-ph span, .why-ph span { font-family: var(--hand); color: var(--graphite); font-size: 1.15rem; }
 .about-copy h2 { margin-bottom: 1.2rem; }
 .about-copy .lead { font-size: clamp(1.2rem, 1.9vw, 1.45rem); line-height: 1.5; font-weight: 300; }
-.why-ph { margin: 26px 0 0; border: 2px dashed #c8d0dc; border-radius: 12px; padding: 22px; }
+.why { margin: 34px 0 0; padding: clamp(22px, 3vw, 32px); background: var(--paper); border: 1px solid var(--ghost); border-radius: 16px; position: relative; }
+.why-title { font-family: var(--hand); font-weight: 400; color: var(--blue); font-size: 1.45rem; letter-spacing: 0; margin-bottom: 12px; }
+.why blockquote { margin: 0; }
+.why blockquote p { margin: 0 0 0.9em; color: var(--ink); }
+.why .why-lead { font-size: clamp(1.2rem, 1.9vw, 1.42rem); line-height: 1.42; font-weight: 400; letter-spacing: -0.015em; }
+.why figcaption { font-family: var(--hand); font-size: 1.6rem; color: var(--blue); transform: rotate(-3deg); display: inline-block; margin-top: 2px; }
 .about-sub { font-size: 1.15rem; margin: 46px 0 18px; }
 .path { list-style: none; display: grid; grid-template-columns: 96px repeat(4, minmax(0, 1fr)); gap: 0; align-items: start; margin-top: 96px; }
 .path li { position: relative; font-size: 0.93rem; line-height: 1.35; padding: 22px 12px 0 0; border-top: 2px solid var(--ink); }
