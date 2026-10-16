@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=2">
 <link rel="preload" href="assets/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/kalam-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=12">
+<link rel="stylesheet" href="assets/css/site.css?v=13">
 
 <script type="application/ld+json">
 {
@@ -44,6 +44,15 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="crayon" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1600" height="500">
+    <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="5" result="wob"/>
+    <feDisplacementMap in="SourceGraphic" in2="wob" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.7 0.22" numOctaves="2" seed="9" result="grain"/>
+    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.25 1.5" result="wax"/>
+    <feComposite in="rough" in2="wax" operator="in"/>
+  </filter>
+</svg>
 
 <div class="preview-bar" id="preview-bar" hidden>
   <p>Preview: the inquiry and download forms aren't connected yet, so submissions won't reach Carly.</p>
@@ -79,7 +88,7 @@
       <svg class="mk hero-arrow" viewBox="0 0 90 60" aria-hidden="true"><path d="M84 54 C 60 52, 30 40, 14 12"/><path d="M6 22 L 14 10 L 26 18"/></svg>
       <span class="hero-note-text"><span>one box per sound.</span> <span>yes, that s says /z/</span></span>
     </div>
-    <p class="hero-sub">Carly Mulvey helps K-5 teams move from research to reality, with coaching, data and curriculum support that lasts past the PD day.</p>
+    <p class="hero-sub">Carly Mulvey helps K-5 teams turn reading research into daily practice, with coaching, data and curriculum support that outlasts the PD day.</p>
     <div class="hero-actions">
       <a class="btn" href="#contact">Start a conversation</a>
       <a class="link-ink" href="#how">See how it works</a>
@@ -103,11 +112,11 @@
 <!-- Problem -->
 <section class="problem" aria-labelledby="problem-title">
   <div class="wrap narrow">
-    <p class="kicker-copy">Districts across the region are moving to evidence-based reading instruction. The research is clear on what to teach. The hard part is the week after the training.</p>
+    <p class="kicker-copy">Districts across the region are adopting evidence-based reading instruction. The research says what to teach. The hard part starts the week after training.</p>
     <h2 id="problem-title" class="statement" data-draw>Teachers get a PD day. Then they're
       <span class="circled">on their own<svg class="mk mk-circle" viewBox="0 0 240 90" preserveAspectRatio="none" aria-hidden="true"><path d="M34 16 C 84 4, 192 6, 226 30 C 244 48, 222 78, 150 83 C 80 88, 14 76, 9 50 C 6 30, 40 13, 84 9"/></svg></span>.
     </h2>
-    <p class="statement-follow">Landing Literacy keeps working alongside your teachers after the training, for as long as it takes to stick.</p>
+    <p class="statement-follow">Landing Literacy keeps working beside your teachers until the training sticks.</p>
   </div>
 </section>
 
@@ -116,32 +125,32 @@
   <div class="wrap">
     <div class="section-head">
       <h2 id="services-title">How Carly helps</h2>
-      <p>Six kinds of support, mixed to fit what your district already has.</p>
+      <p>Six kinds of support, mixed to fit what you already have.</p>
     </div>
     <div class="services">
       <article class="service">
         <h3>Foundational Reading PD</h3>
-        <p>Phonemic awareness, phonics, spelling and morphology PD teachers can use the next morning.</p>
+        <p>Phonemic awareness, phonics, spelling and morphology PD that teachers use the next morning.</p>
       </article>
       <article class="service">
         <h3>Assessment &amp; Intervention</h3>
-        <p>Train your team on the screener, turn diagnostic data into intervention groups, and set up the progress monitoring and I&amp;RS routines that keep groups moving.</p>
+        <p>Screener training, intervention groups built from diagnostic data, and the progress monitoring and I&amp;RS routines that keep groups moving.</p>
       </article>
       <article class="service">
         <h3>Curriculum Design</h3>
-        <p>Scope and sequence, pacing guides, literacy block structure, standards crosswalks, and report-card rubrics that match what's taught.</p>
+        <p>Scope and sequence, pacing guides, literacy block design, standards crosswalks and report-card rubrics that match what you teach.</p>
       </article>
       <article class="service">
         <h3>Program Selection &amp; Rollout</h3>
-        <p>Evaluate options, run pilots, then launch the program you choose with training, demo lessons and year-one check-ins.</p>
+        <p>Compare options, run pilots, then launch your choice with training, demo lessons and year-one check-ins.</p>
       </article>
       <article class="service">
         <h3>Instructional Coaching</h3>
-        <p>Plan, model, debrief. Demo lessons in real classrooms, data chats, and grade-level team meetings in person or virtual.</p>
+        <p>Plan, model, debrief. Demo lessons, data chats and grade-level meetings, in person or virtual.</p>
       </article>
       <article class="service">
         <h3>Ready-to-Use Resources</h3>
-        <p>Pacing guides, intervention binders and decodable text guides built around your program, plus Make-and-Take sessions where teachers leave with materials in hand.</p>
+        <p>Pacing guides, intervention binders and decodable text guides built for your program. At Make-and-Take sessions, teachers leave with materials in hand.</p>
       </article>
     </div>
   </div>
@@ -152,29 +161,29 @@
   <div class="wrap">
     <div class="section-head">
       <h2 id="how-title">Support that fits your calendar</h2>
-      <p>Start whenever you're ready, for a single session or a longer partnership. Here's how the work can line up with the school year.</p>
+      <p>Start anytime, with one session or a full year. Here's how the work lines up with the school calendar.</p>
     </div>
     <ol class="year" data-draw>
       <svg class="mk year-line" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 200 6, 380 18, 560 11 S 860 8, 980 13"/><path d="M962 4 L 990 13 L 962 22"/></svg>
       <li class="season">
         <p class="season-name">Summer</p>
         <h3>Plan</h3>
-        <p>Grade-level curriculum sessions: pacing guides, literacy block, report-card rubrics, standards crosswalks, and classroom setup like sound walls and libraries sorted by topic.</p>
+        <p>Build pacing guides, literacy blocks, report-card rubrics and standards crosswalks with each grade. Set up sound walls and topic-sorted classroom libraries.</p>
       </li>
       <li class="season">
         <p class="season-name">Fall</p>
         <h3>Launch</h3>
-        <p>Screener and program training before day one. Then demo lessons, diagnostic surveys, first intervention groups and beginning-of-year data chats.</p>
+        <p>Train teachers on the screener and program before day one. Then model lessons, give diagnostic surveys, form intervention groups and hold the first data chats.</p>
       </li>
       <li class="season">
         <p class="season-name">Winter</p>
         <h3>Adjust</h3>
-        <p>Middle-of-year data chats by grade: who jumped a tier, who slipped, which subskill is behind. Then regroup, model small groups and tighten I&amp;RS plans.</p>
+        <p>Read middle-of-year data by grade: who jumped a tier, who slipped, which subskill lags. Then regroup, model small groups and tighten I&amp;RS plans.</p>
       </li>
       <li class="season">
         <p class="season-name">Spring</p>
         <h3>Sustain</h3>
-        <p>End-of-year data, program pilots, curriculum revisions and next year's plan, built with the teachers who'll teach it.</p>
+        <p>Review end-of-year data, pilot programs, revise curriculum and plan next year with the teachers who'll teach it.</p>
       </li>
     </ol>
   </div>
@@ -185,16 +194,16 @@
   <div class="wrap day-grid">
     <div class="day-intro">
       <h2 id="day-title">What a day on site looks like</h2>
-      <p>Most of the day happens in classrooms, not a conference room. Here's one example.</p>
+      <p>Most of the day happens in classrooms, not a conference room.</p>
       <p class="day-foot">Built around preps, grade-level meetings and push-in time.</p>
     </div>
     <ol class="agenda" data-draw>
-      <li><span class="agenda-time">8:30</span><span class="agenda-what">Review the next three units of advanced word study with a grade-level team</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
-      <li><span class="agenda-time">9:15</span><span class="agenda-what">Carly models a lesson in one teacher's classroom while the team watches</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
-      <li><span class="agenda-time">10:15</span><span class="agenda-what">Debrief, then work through more examples of the patterns taught</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
-      <li><span class="agenda-time">11:20</span><span class="agenda-what">Same cycle with the next grade-level team</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
+      <li><span class="agenda-time">8:30</span><span class="agenda-what">Map the next three units of advanced word study with a grade-level team</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
+      <li><span class="agenda-time">9:15</span><span class="agenda-what">Carly models a lesson in a teacher's classroom while the team watches</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
+      <li><span class="agenda-time">10:15</span><span class="agenda-what">Debrief and practice more examples of the patterns</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
+      <li><span class="agenda-time">11:20</span><span class="agenda-what">Repeat the cycle with the next grade</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
       <li><span class="agenda-time">1:10</span><span class="agenda-what">Build intervention groups with the intervention team</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
-      <li><span class="agenda-time">2:05</span><span class="agenda-what">Progress monitoring check-in with the resource room teacher</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
+      <li><span class="agenda-time">2:05</span><span class="agenda-what">Check progress monitoring data with the resource room teacher</span><svg class="mk tick" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg></li>
     </ol>
   </div>
 </section>
@@ -204,18 +213,18 @@
   <div class="wrap">
     <div class="section-head">
       <h2 id="fit-title">Is Landing Literacy a fit for your district?</h2>
-      <p>Ten quick questions, about two minutes. You'll get a fit rating, your three biggest opportunities, and the scores Carly would track with you.</p>
+      <p>Ten questions, two minutes. Get a fit rating, your top three opportunities and the scores Carly would track with you.</p>
     </div>
     <div class="fit-panel" id="fit-panel">
       <div class="fit-start" id="fit-start" data-draw>
         <div>
-          <p>Answer for your district as it is today. There are no wrong answers, and nothing is sent anywhere unless you choose to share your results.</p>
+          <p>Answer for your district as it is today. There are no wrong answers, and nothing leaves this page unless you share it.</p>
           <button class="btn" type="button" id="fit-begin">Start the fit check</button>
         </div>
         <ul class="fit-get">
-          <li><svg class="mk" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg><p><strong>A fit rating</strong><span>From strong fit to light-touch, with an honest "not right now" if that's the answer.</span></p></li>
+          <li><svg class="mk" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg><p><strong>A fit rating</strong><span>From strong fit to light-touch, with an honest "not right now" when that's the answer.</span></p></li>
           <li><svg class="mk" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg><p><strong>Your top three opportunities</strong><span>Ranked, with what the work would look like.</span></p></li>
-          <li><svg class="mk" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg><p><strong>The scores to watch</strong><span>The measures Carly would track with you to show it's working.</span></p></li>
+          <li><svg class="mk" viewBox="0 0 26 22" aria-hidden="true"><path d="M3 12 L 10 19 L 23 3"/></svg><p><strong>The scores to watch</strong><span>The measures that show it's working.</span></p></li>
         </ul>
       </div>
       <div class="fit-q" id="fit-q" hidden>
@@ -236,35 +245,31 @@
   <div class="wrap">
     <div class="section-head">
       <h2 id="proof-title">What educators and families say</h2>
+      <p class="swipe-hint" aria-hidden="true">swipe &rarr;</p>
     </div>
-
-    <div class="quote-group">
-      <h3 class="quote-group-title">Administrators<span class="swipe-hint" aria-hidden="true">swipe &rarr;</span></h3>
-      <div class="quotes quotes-2">
+    <div class="quotes">
         <!-- PENDING PERMISSION -->
-        <figure class="quote quote-lg">
+        <figure class="quote">
           <blockquote><p>I am humbled to work with so many outstanding teachers and leaders and I count you among the very best. We are very fortunate to have you in such an important and critical role.</p></blockquote>
           <figcaption>Superintendent</figcaption>
         </figure>
         <!-- PENDING PERMISSION -->
-        <figure class="quote quote-lg">
+        <figure class="quote">
           <blockquote><p>You took the time to not only listen to the mom, but you made her feel that her input was valued. You answered all of her questions with precision and facts. I feel very fortunate to have you on our team! Your expertise is truly valued and appreciated!!</p></blockquote>
           <figcaption>Elementary school principal</figcaption>
         </figure>
-      </div>
-    </div>
-
-    <div class="quote-group">
-      <h3 class="quote-group-title">Teachers she's coached<span class="swipe-hint" aria-hidden="true">swipe &rarr;</span></h3>
-      <div class="quotes quotes-3">
-        <!-- PENDING PERMISSION: role, district -->
-        <figure class="quote">
-          <blockquote><p>I always walk away with so much knowledge each time we work with you!</p></blockquote>
-          <figcaption>Classroom teacher</figcaption>
-        </figure>
-        <!-- PENDING PERMISSION: role, district -->
+        <!-- PENDING PERMISSION -->
         <figure class="quote">
           <blockquote><p>You made me feel SO much better about teaching [our phonics program]. I look forward to working with you again soon!</p></blockquote>
+          <figcaption>Classroom teacher</figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote><p>We are so proud of how far he's come and we have definitely noticed a difference at home when he's reading.</p></blockquote>
+          <figcaption>Parent of a reading intervention student</figcaption>
+        </figure>
+        <!-- PENDING PERMISSION -->
+        <figure class="quote">
+          <blockquote><p>I always walk away with so much knowledge each time we work with you!</p></blockquote>
           <figcaption>Classroom teacher</figcaption>
         </figure>
         <!-- PENDING PERMISSION -->
@@ -272,21 +277,10 @@
           <blockquote><p>Thank you for helping me out all of the time with data and taking the time to explain!</p></blockquote>
           <figcaption>Learning Disabilities Teacher-Consultant</figcaption>
         </figure>
-      </div>
-    </div>
-
-    <div class="quote-group">
-      <h3 class="quote-group-title">Families<span class="swipe-hint" aria-hidden="true">swipe &rarr;</span></h3>
-      <div class="quotes quotes-2">
-        <figure class="quote">
-          <blockquote><p>We are so proud of how far he's come and we have definitely noticed a difference at home when he's reading.</p></blockquote>
-          <figcaption>Parent of a reading intervention student</figcaption>
-        </figure>
         <figure class="quote">
           <blockquote><p>She has really come so far and I see the progress.</p></blockquote>
           <figcaption>Parent of a reading intervention student</figcaption>
         </figure>
-      </div>
     </div>
   </div>
 </section>
@@ -296,13 +290,13 @@
   <div class="wrap">
     <div class="section-head">
       <h2 id="story-title">A K-5 New Jersey public school district, since 2023</h2>
-      <p>One partnership, year by year. References are available on request.</p>
+      <p>One partnership, year by year. References available on request.</p>
     </div>
     <div class="story-start">
       <h3>Where they started</h3>
       <ul>
-        <li>A phonics and advanced word study program in K-1 only, and teachers who hadn't been given the background knowledge to teach its phonograms.</li>
-        <li>Balanced-literacy blocks in K-5, built on the workshop model and guided reading, for both word recognition and language comprehension.</li>
+        <li>A phonics and advanced word study program in K-1 only. Teachers lacked the background knowledge to teach its phonograms.</li>
+        <li>Balanced-literacy blocks in K-5: workshop model and guided reading for both word recognition and language comprehension.</li>
         <li>No universal screener.</li>
       </ul>
     </div>
@@ -316,22 +310,22 @@
       <ol class="journey-years">
         <li class="jy" style="--v:22; --i:0">
           <p class="jy-year">2023-24</p>
-          <p class="jy-work">Universal screener training and background-knowledge training on phonics patterns, both before the first day. Demo lessons in K and grade 1 classrooms. Diagnostic inventories turned into targeted intervention groups. Beginning- and middle-of-year data chats by grade. Spring curriculum revisions against the new NJ ELA standards.</p>
+          <p class="jy-work">Trained staff on the universal screener and phonics patterns before day one. Modeled lessons in K-1. Turned diagnostic inventories into intervention groups. Led beginning- and middle-of-year data chats. Revised curriculum to the new NJ ELA standards.</p>
           <div class="jy-chart"><span class="jy-val" data-count="22">22%</span><span class="jy-bar jy-red"></span></div>
         </li>
         <li class="jy" style="--v:17; --i:1">
           <p class="jy-year">2024-25</p>
-          <p class="jy-work">Vertically articulated K-5 pacing guides and report-card rubrics, phonics program training for grade 3, morphology for grades 4-5, I&amp;RS and Child Study Team training, and pilots of Tier 1 programs.</p>
+          <p class="jy-work">Built vertically articulated K-5 pacing guides and report-card rubrics. Trained grade 3 in phonics and grades 4-5 in morphology. Trained I&amp;RS and Child Study Teams. Piloted Tier 1 programs.</p>
           <div class="jy-chart"><span class="jy-val" data-count="17">17%</span><span class="jy-bar jy-amber"></span></div>
         </li>
         <li class="jy" style="--v:14; --i:2">
           <p class="jy-year">2025-26</p>
-          <p class="jy-work">Rollout of a new K-5 Tier 1 curriculum with demo lessons and debriefs, a morphology, grammar and advanced word study program for grades 4-5, and an intervention binder for every teacher.</p>
+          <p class="jy-work">Rolled out a new K-5 Tier 1 curriculum with demos and debriefs. Launched morphology, grammar and advanced word study in grades 4-5. Gave every teacher an intervention binder.</p>
           <div class="jy-chart"><span class="jy-val" data-count="14">14%</span><span class="jy-bar jy-blue"></span></div>
         </li>
         <li class="jy jy-next" style="--i:3">
           <p class="jy-year">2026-27</p>
-          <p class="jy-work">Program training, data analysis days and curriculum check-ins, on the calendar now.</p>
+          <p class="jy-work">Program training, data analysis days and curriculum check-ins, already on the calendar.</p>
           <div class="jy-chart">
             <p class="jy-note">more to come</p>
             <svg class="jy-stars" viewBox="0 0 120 70" aria-hidden="true"><path class="star" style="--d:0s" d="M60 14 l4 12 l12 4 l-12 4 l-4 12 l-4 -12 l-12 -4 l12 -4 Z"/><path class="star" style="--d:.15s" d="M28 40 l2.5 7 l7 2.5 l-7 2.5 l-2.5 7 l-2.5 -7 l-7 -2.5 l7 -2.5 Z"/><path class="star" style="--d:.3s" d="M94 44 l2.5 7 l7 2.5 l-7 2.5 l-2.5 7 l-2.5 -7 l-7 -2.5 l7 -2.5 Z"/><circle class="star" style="--d:.2s" cx="88" cy="16" r="2.6"/><circle class="star" style="--d:.35s" cx="22" cy="18" r="2.2"/></svg>
@@ -344,7 +338,7 @@
     <div class="results" data-draw>
       <p class="results-kicker">The results</p>
       <h3 class="results-title">About <span class="circled">36% fewer<svg class="mk mk-circle" viewBox="0 0 240 90" preserveAspectRatio="none" aria-hidden="true"><path d="M34 16 C 84 4, 192 6, 226 30 C 244 48, 222 78, 150 83 C 80 88, 14 76, 9 50 C 6 30, 40 13, 84 9"/></svg></span> students at risk for reading failure</h3>
-      <p>The share of students at risk fell every year, from 22% to 17% to 14%. That's an 8-percentage-point drop in two years, or about 36% fewer students at risk.</p>
+      <p>The at-risk share fell every year, from 22% to 17% to 14%: an 8-point drop in two years.</p>
     </div>
     <p class="story-result" data-draw>The district has brought Carly back <span class="circled">every year since 2023<svg class="mk mk-circle" viewBox="0 0 240 90" preserveAspectRatio="none" aria-hidden="true"><path d="M34 16 C 84 4, 192 6, 226 30 C 244 48, 222 78, 150 83 C 80 88, 14 76, 9 50 C 6 30, 40 13, 84 9"/></svg></span>.</p>
     <p class="outcomes" id="outcomes" hidden></p>
@@ -404,16 +398,16 @@
   <div class="wrap narrow">
     <h2 id="faq-title">Questions districts ask</h2>
     <div class="faq-list">
-      <details><summary>Where do you work?</summary><p>Carly partners with school districts in New Jersey, New York, Connecticut and Pennsylvania. The work happens on site, in classrooms and team meetings, with short virtual check-ins between visits when they help.</p></details>
-      <details><summary>Who do you work with?</summary><p>School districts. Within a district, Carly works with administrators, coaches, classroom teachers, interventionists and special education teams.</p></details>
-      <details><summary>What grades do you support?</summary><p>K-5, from phonemic awareness and phonics in the early grades to morphology, fluency and curriculum in grades 3-5.</p></details>
-      <details><summary>How long is a typical partnership?</summary><p>Single PD sessions and workshops are available. The strongest results come from committing to at least a full school year, so training is followed by coaching, data chats and check-ins. Many districts continue year to year.</p></details>
-      <details><summary>When does the work happen?</summary><p>Throughout the school year, plus summer planning sessions.</p></details>
-      <details><summary>Can you work with the program we already have?</summary><p>Yes. Most partnerships start with the program a district already owns: filling its gaps, pacing it, and coaching teachers to teach it well.</p></details>
-      <details><summary>Which programs do you support?</summary><p>Most of the structured literacy programs, screeners and diagnostic assessments used in elementary classrooms today. If you're not sure about yours, just ask.</p></details>
-      <details><summary>Can you help us choose a new curriculum?</summary><p>Yes. Carly helps teams evaluate options against the research, run pilots, and roll out the program they choose.</p></details>
-      <details><summary>Do you work with special education and I&amp;RS teams?</summary><p>Yes. Literacy screening training for Child Study Teams, I&amp;RS procedures and goals, and planning with resource room teachers.</p></details>
-      <details><summary>Do you accept purchase orders?</summary><p>Yes. District purchase orders are accepted, and a W-9 is available on request.</p></details>
+      <details><summary>Where do you work?</summary><p>School districts in New Jersey, New York, Connecticut and Pennsylvania. Carly works on site, in classrooms and team meetings, with short virtual check-ins between visits.</p></details>
+      <details><summary>Who do you work with?</summary><p>School districts. Carly works with administrators, coaches, teachers, interventionists and special education teams.</p></details>
+      <details><summary>What grades do you support?</summary><p>K-5: phonemic awareness and phonics in the early grades, morphology, fluency and curriculum in grades 3-5.</p></details>
+      <details><summary>How long is a typical partnership?</summary><p>Carly offers single PD sessions and workshops, but a full school year works best: training, then coaching, data chats and check-ins. Many districts return year after year.</p></details>
+      <details><summary>When does the work happen?</summary><p>All school year, plus summer planning.</p></details>
+      <details><summary>Can you work with the program we already have?</summary><p>Yes. Most partnerships start with the program you own: filling its gaps, pacing it and coaching teachers to teach it well.</p></details>
+      <details><summary>Which programs do you support?</summary><p>Most structured literacy programs, screeners and diagnostic assessments in elementary classrooms. Not sure about yours? Just ask.</p></details>
+      <details><summary>Can you help us choose a new curriculum?</summary><p>Yes. Carly helps teams weigh options against the research, run pilots and roll out their choice.</p></details>
+      <details><summary>Do you work with special education and I&amp;RS teams?</summary><p>Yes. Carly trains Child Study Teams on literacy screening, guides I&amp;RS procedures and goals, and plans with resource room teachers.</p></details>
+      <details><summary>Do you accept purchase orders?</summary><p>Yes. Carly accepts district purchase orders and provides a W-9 on request.</p></details>
     </div>
   </div>
 </section>
@@ -423,7 +417,7 @@
   <div class="wrap contact-grid">
     <div class="contact-side">
       <h2 id="contact-title">Start a conversation</h2>
-      <p>Tell Carly a little about your district. She'll reply to you directly.</p>
+      <p>Tell Carly about your district.</p>
       <div class="avatar-row">
         <img class="avatar" src="assets/img/carly-avatar.webp" alt="Carly Mulvey" width="240" height="240" loading="lazy">
         <p class="avatar-note" id="reply-note">You'll hear back from Carly herself.</p>
