@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=2">
 <link rel="preload" href="assets/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/kalam-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=28">
+<link rel="stylesheet" href="assets/css/site.css?v=30">
 
 <script type="application/ld+json">
 {
@@ -45,7 +45,14 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <filter id="crayon" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1600" height="500">
+  <filter id="crayon" x="-15%" y="-40%" width="130%" height="180%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="5" result="wob"/>
+    <feDisplacementMap in="SourceGraphic" in2="wob" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.7 0.22" numOctaves="2" seed="9" result="grain"/>
+    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.25 1.5" result="wax"/>
+    <feComposite in="rough" in2="wax" operator="in"/>
+  </filter>
+  <filter id="crayon-sm" filterUnits="userSpaceOnUse" x="-4" y="-4" width="56" height="56">
     <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="5" result="wob"/>
     <feDisplacementMap in="SourceGraphic" in2="wob" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="rough"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.7 0.22" numOctaves="2" seed="9" result="grain"/>
@@ -76,20 +83,6 @@
 </header>
 
 <main id="main">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs>
-    <filter id="crayon-heavy" x="-10%" y="-10%" width="120%" height="120%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="3" result="w"/>
-      <feDisplacementMap in="SourceGraphic" in2="w" scale="4" xChannelSelector="R" yChannelSelector="G" result="r"/>
-      <feTurbulence type="fractalNoise" baseFrequency="1.1 0.16" numOctaves="2" seed="8" result="g"/>
-      <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.5" result="m"/>
-      <feComposite in="r" in2="m" operator="in"/>
-    </filter>
-    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)">
-      <rect width="6" height="1.6" fill="#fff" opacity=".28"/>
-    </pattern>
-  </defs>
-</svg>
 <div class="ship" id="ship" aria-hidden="true">
   <svg viewBox="-50 -110 100 160">
     <g class="ship-tilt">
@@ -97,18 +90,7 @@
         <path fill="#f2b544" d="M-11 -2 C -14 16, -5 32, 0 48 C 5 32, 14 16, 11 -2 Z"/>
         <path fill="#fbe3a6" d="M-5 -2 C -6 12, -2 20, 0 32 C 2 20, 6 12, 5 -2 Z"/>
       </g>
-      <g filter="url(#crayon-heavy)">
-        <path fill="#e4572e" d="M-19 -38 C -36 -26, -38 -8, -34 8 L -18 -8 Z"/>
-        <path fill="#e4572e" d="M19 -38 C 36 -26, 38 -8, 34 8 L 18 -8 Z"/>
-        <path fill="#fbf1dc" d="M0 -106 C 19 -84, 24 -52, 20 -12 L -20 -12 C -24 -52, -19 -84, 0 -106 Z"/>
-        <path fill="url(#hatch)" d="M0 -106 C 19 -84, 24 -52, 20 -12 L -20 -12 C -24 -52, -19 -84, 0 -106 Z"/>
-        <path fill="#e4572e" d="M0 -106 C 10 -94, 15 -84, 16 -76 L -16 -76 C -15 -84, -10 -94, 0 -106 Z"/>
-        <path fill="#c9431f" d="M-13 -12 L 13 -12 L 10 -2 L -10 -2 Z"/>
-        <path fill="#e4572e" d="M-4 -28 L 4 -28 L 4 6 L -4 6 Z"/>
-        <circle fill="#e4572e" cx="0" cy="-54" r="9"/>
-        <circle fill="#f8c98f" cx="0" cy="-54" r="4.6"/>
-      </g>
-      <path class="ship-line" d="M0 -106 C 19 -84, 24 -52, 20 -12 L -20 -12 C -24 -52, -19 -84, 0 -106 Z M-19 -38 C -36 -26, -38 -8, -34 8 L -18 -8 M19 -38 C 36 -26, 38 -8, 34 8 L 18 -8"/>
+      <image href="assets/img/chart/rocket.webp" x="-50" y="-112" width="100" height="132"/>
     </g>
   </svg>
 </div>
@@ -157,13 +139,7 @@
     <div class="pad" id="pad" aria-hidden="true">
       <svg viewBox="0 0 300 120">
         <g class="pad-puff"><circle cx="112" cy="30" r="10"/><circle cx="188" cy="30" r="10"/><circle cx="90" cy="26" r="7"/><circle cx="210" cy="26" r="7"/><circle cx="150" cy="22" r="6"/></g>
-        <g filter="url(#crayon-heavy)">
-          <path fill="#9cc0de" d="M150 34 C 120 20, 72 14, 22 22 L 14 48 C 62 40, 116 44, 150 58 Z"/>
-          <path fill="#2c6e69" d="M150 58 C 114 44, 64 40, 8 52 L 0 80 C 56 68, 112 72, 150 88 Z"/>
-          <path fill="#f2b544" d="M150 34 C 180 20, 228 14, 278 22 L 286 48 C 238 40, 184 44, 150 58 Z"/>
-          <path fill="#e8622a" d="M150 58 C 186 44, 236 40, 292 52 L 300 80 C 244 68, 188 72, 150 88 Z"/>
-          <path fill="url(#hatch)" d="M150 34 C 120 20, 72 14, 22 22 L 0 80 C 56 68, 112 72, 150 88 C 188 72, 244 68, 300 80 L 278 22 C 228 14, 180 20, 150 34 Z"/>
-        </g>
+        <image href="assets/img/chart/book.webp" x="-6" y="8" width="312" height="90"/>
       </svg>
     </div>
   </div>
@@ -562,6 +538,6 @@
   </div>
 </footer>
 
-<script src="assets/js/site.js?v=21" defer></script>
+<script src="assets/js/site.js?v=22" defer></script>
 </body>
 </html>

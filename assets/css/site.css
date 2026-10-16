@@ -808,3 +808,9 @@ p, li, blockquote { text-wrap: pretty; }
 /* Rocket in flight: soft, translucent, behind frosted glass */
 .ship svg { transition: filter .5s ease, opacity .5s ease; }
 .ship.is-ghost svg { filter: blur(3px) saturate(.85); opacity: .38; }
+@media (hover: none) {
+  /* Phones: a lighter frost that is cheaper to draw while scrolling */
+  .ship.is-ghost svg { filter: blur(1.5px); opacity: .4; }
+}
+/* Small icons have straight lines (zero-height boxes), so they use a fixed, icon-sized texture area */
+.start-badge .mk path { filter: url(#crayon-sm); }
