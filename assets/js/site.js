@@ -213,7 +213,7 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
   const ship = $("#ship"), start = $("#ship-start"), pad = $("#pad");
   if (!ship || !start || !pad) return;
   const svgH = 160 / 100, baseY = 110 / 160; // svg aspect, and where the nozzle sits in it
-  let A, B, C, w, h, landed = false, ticking = false;
+  let A, B, w, h, landed = false, ticking = false;
 
   function measure() {
     w = ship.getBoundingClientRect().width || 100;
@@ -225,12 +225,8 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     // Start: beside the headline when there's room for the rocket, otherwise beside the intro and buttons
     if (room >= w * 1.5) A = { x: titleRight + room / 2, y: title.t + title.h * 0.5 + h * 0.35 };
     else A = { x: wrap.r - w * 0.6, y: act.b };
-    // Middle: tucked behind the credential cards, a little left of center
-    const cr = R($(".creds-list"));
-    C = { x: cr.l + cr.w * 0.6, y: cr.t + cr.h * 0.62 };
     const p = R(pad);
     B = { x: p.l + p.w / 2, y: p.t + p.h * 0.24 };
-    if (C.y <= A.y + 20) C = { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 };
   }
   const smooth = t => t * t * (3 - 2 * t);
   function place() {
@@ -239,12 +235,12 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     if (reduceMotion) y = B.y;
     else y = Math.min(B.y, Math.max(A.y, scrollY + innerHeight * 0.42));
     const k = B.y > A.y ? (y - A.y) / (B.y - A.y) : 1;
-    // Glide A -> C (behind the cards) -> B (the book), easing at each stop
-    const [P, Q] = y <= C.y ? [A, C] : [C, B];
-    const t = Math.min(1, Math.max(0, (y - P.y) / Math.max(1, Q.y - P.y)));
-    const x = P.x + (Q.x - P.x) * smooth(t);
-    const slope = (Q.x - P.x) * 6 * t * (1 - t) / Math.max(1, Q.y - P.y);
-    const tilt = reduceMotion ? 0 : Math.max(-24, Math.min(24, Math.atan(slope) * 180 / Math.PI * 0.7));
+    // A gentle, natural descent: eases out of the hover, drifts toward the book, settles straight down
+    const e = smooth(k);
+    const sway = Math.sin(k * Math.PI * 2) * Math.min(18, innerWidth * 0.015) * (1 - k);
+    const x = A.x + (B.x - A.x) * e + sway;
+    const slope = ((B.x - A.x) * 6 * k * (1 - k)) / Math.max(1, B.y - A.y);
+    const tilt = reduceMotion ? 0 : Math.max(-12, Math.min(12, Math.atan(slope) * 180 / Math.PI * 0.6 + sway * 0.25));
     ship.style.transform = `translate3d(${x - w / 2}px, ${y - h * baseY}px, 0)`;
     ship.style.setProperty("--tilt", `${tilt.toFixed(1)}deg`);
     ship.classList.toggle("is-hovering", k <= 0.001);
