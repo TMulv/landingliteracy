@@ -8,11 +8,8 @@ The marketing site for Landing Literacy, LLC. Plain HTML, CSS and JavaScript, ho
 | --- | --- |
 | `index.html` | The whole page |
 | `assets/css/site.css` | Styles |
-| `assets/js/site.js` | Hero tiles, fit check, forms, download gate. **Settings live at the top in `CONFIG`.** |
+| `assets/js/site.js` | Hero tiles, fit check, forms. **Settings live at the top in `CONFIG`.** |
 | `assets/fonts/` | Lexend and Kalam, self-hosted |
-| `resources/` | The free PDFs people download |
-| `src/resources/` | HTML sources for those PDFs |
-| `scripts/build_pdfs.py` | Rebuilds the PDFs and their thumbnails from `src/resources/` |
 
 ## Before launch
 
@@ -35,13 +32,3 @@ At Namecheap (Domain List > Manage > Advanced DNS), remove any parking records a
 | CNAME | www | tmulv.github.io. |
 
 Leave any MX or TXT records for email alone. Then add a `CNAME` file containing `landingliteracy.com`, and in the repo's Settings > Pages set the custom domain and tick **Enforce HTTPS** once it's available.
-
-## Editing the PDFs
-
-Edit the HTML in `src/resources/`, then run:
-
-```
-pip install playwright && python3 scripts/build_pdfs.py
-```
-
-Needs `qpdf` and `pdftoppm` (poppler) installed.

@@ -300,7 +300,7 @@ const VERDICTS = {
   strong: { title: "Strong fit", copy: "There's real room to grow, and it's the kind of work Carly does every week. A first conversation would start with your top opportunity below." },
   good: { title: "Good fit", copy: "You have a solid base. Focused support in a couple of areas could make it stick in every classroom." },
   light: { title: "Light-touch fit", copy: "You've built a lot already. A data review or a short coaching cycle may be all you need, and that's a fine place to start." },
-  notfit: { title: "Probably not the right fit", copy: "Carly focuses on K-5 reading. The free resources below are still yours, and she's happy to point you toward people who specialize in secondary literacy." }
+  notfit: { title: "Probably not the right fit", copy: "Carly focuses on K-5 reading, but she's happy to point you toward people who specialize in secondary literacy." }
 };
 
 (function fitCheck() {
@@ -388,7 +388,7 @@ const VERDICTS = {
   function showResult(key, pct, top) {
     const v = VERDICTS[key];
     const state = answers.state ? answers.state.v : "";
-    const region = state === "Other" ? `<p class="region-note">Carly mainly works in New Jersey, New York, Connecticut and Pennsylvania. Virtual support may still work, so ask.</p>` : "";
+    const region = state === "Other" ? `<p class="region-note">Carly works with districts in New Jersey, New York, Connecticut and Pennsylvania.</p>` : "";
     const meter = key === "notfit" ? "" : `<div class="verdict-meter"><span>Fit score</span><span class="meter" aria-hidden="true"><span style="width:${Math.max(6, Math.round(pct * 100))}%"></span></span><span>${Math.round(pct * 100)}%</span></div>`;
 
     const oppsHtml = key === "notfit" ? "" : `
@@ -420,7 +420,7 @@ const VERDICTS = {
       ${outcomes}
       <p class="fit-honest">This is a conversation starter, not a diagnosis. The real picture comes from looking at your data together, and every district starts somewhere different.</p>
       <div class="fit-actions">
-        ${key === "notfit" ? `<a class="btn" href="#resources">See the free resources</a>` : `<button class="btn" type="button" id="fit-send">Send my results to Carly</button>`}
+        ${key === "notfit" ? `<a class="btn" href="#contact">Ask Carly for a referral</a>` : `<button class="btn" type="button" id="fit-send">Send my results to Carly</button>`}
         <button class="linklike" type="button" id="fit-restart">Start over</button>
       </div>`;
 
@@ -528,64 +528,3 @@ async function post(endpoint, data) {
   form.addEventListener("input", e => { if (e.target.hasAttribute("aria-invalid")) e.target.setAttribute("aria-invalid", "false"); });
 })();
 
-/* ---------- Resource downloads: email once, unlock all ---------- */
-(function resourceGate() {
-  const KEY = "ll-resources-unlocked";
-  const gate = $("#gate"), gateForm = $("#gate-form"), err = $("#gate-error");
-  let pending = null;
-
-  const unlocked = () => { try { return localStorage.getItem(KEY) === "1"; } catch { return false; } };
-  const remember = () => { try { localStorage.setItem(KEY, "1"); } catch { /* private mode: fine */ } };
-
-  function download(link) {
-    const a = document.createElement("a");
-    a.href = link.getAttribute("href");
-    a.download = "";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  }
-
-  $$("[data-resource]").forEach(link => {
-    link.addEventListener("click", e => {
-      if (unlocked()) return; // normal download
-      e.preventDefault();
-      pending = link;
-      $("#gate-resource").value = link.dataset.resource;
-      err.hidden = true;
-      if (typeof gate.showModal === "function") gate.showModal(); else gate.setAttribute("open", "");
-      gateForm.email.focus();
-    });
-  });
-
-  $("#gate-close").addEventListener("click", () => gate.close());
-  gate.addEventListener("click", e => { if (e.target === gate) gate.close(); });
-
-  gateForm.addEventListener("submit", async e => {
-    e.preventDefault();
-    err.hidden = true;
-    if (validate(gateForm)) {
-      err.textContent = "Please enter a valid email address.";
-      err.hidden = false;
-      gateForm.email.focus();
-      return;
-    }
-    const btn = gateForm.querySelector('button[type="submit"]');
-    btn.disabled = true; btn.textContent = "Unlocking...";
-    const data = new FormData(gateForm);
-    data.append("_subject", `Resource download: ${data.get("resource")}`);
-    data.append("source", "resource-download");
-    try {
-      const r = await post(CONFIG.leadsEndpoint, data);
-      if (!r.ok) throw new Error("bad response");
-      remember();
-      gate.close();
-      if (pending) download(pending);
-    } catch {
-      err.textContent = "Something went wrong. Please try again in a moment.";
-      err.hidden = false;
-    } finally {
-      btn.disabled = false; btn.textContent = "Unlock and download";
-    }
-  });
-})();

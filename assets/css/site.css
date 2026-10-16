@@ -167,7 +167,6 @@ button { font: inherit; color: inherit; }
 .service p { color: var(--graphite); margin-bottom: 1rem; }
 .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li { font-size: 0.8rem; color: var(--ink); background: var(--mist); border-radius: 999px; padding: 3px 11px; }
-.grades { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 8px 0 0; font-family: var(--hand); color: var(--blue); font-size: 1.25rem; }
 
 /* How it works */
 .year { list-style: none; position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 3vw, 40px); padding-top: 54px; }
