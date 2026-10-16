@@ -3,6 +3,8 @@
    Lexend for everything people read. Kalam only for marker annotations. */
 
 @font-face { font-family: "Lexend"; src: url("../fonts/lexend.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-italic.woff2") format("woff2"); font-weight: 200 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "Kalam"; src: url("../fonts/kalam-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Kalam"; src: url("../fonts/kalam-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 
@@ -25,6 +27,7 @@
   --cr-gold: #eaa52a;
 
   --sans: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --book: "Literata", Georgia, "Times New Roman", serif;
   --hand: "Kalam", "Comic Neue", cursive;
 
   --wrap: 1180px;
@@ -168,10 +171,28 @@ button { font: inherit; color: inherit; }
 .section-head p { margin-top: 1rem; font-size: clamp(1.05rem, 1.5vw, 1.22rem); color: var(--graphite); font-weight: 300; }
 
 /* Services */
-.services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(24px, 4vw, 56px); }
-.service { border-top: 2px solid var(--ink); padding: 22px 0 44px; }
-.service h3 { font-size: 1.32rem; margin-bottom: 0.6rem; }
-.service p { color: var(--graphite); margin-bottom: 1rem; }
+/* Services: tiles that match the testimonial wall. Rows of 4+2, 2+4, 3+3 */
+.services { counter-reset: svc; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.service { --tile: var(--paper); --c: var(--cr-blue); counter-increment: svc; grid-column: span 2; display: flex; flex-direction: column; background: var(--tile); border: 1px solid rgba(26,28,32,.06); border-radius: 16px; padding: 22px 24px 24px; transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+.service::before { content: counter(svc, decimal-leading-zero); font-family: var(--hand); font-size: 1.35rem; line-height: 1; color: var(--c); margin-bottom: 18px; }
+.service h3 { font-size: 1.3rem; margin: auto 0 0.5rem; }
+.service p { color: var(--graphite); margin: 0; }
+.svc-feature { grid-column: span 4; --tile: #fdf1e7; --c: var(--cr-orange); }
+.svc-feature h3 { font-size: clamp(1.5rem, 2.4vw, 1.9rem); }
+.svc-feature p { font-size: 1.12rem; max-width: 30em; }
+.svc-teal { --tile: #eaf3f2; --c: var(--cr-teal); }
+.svc-blue { --tile: var(--blue-soft); --c: var(--cr-blue); }
+.svc-paper { grid-column: span 4; --c: var(--cr-red); }
+.svc-ink { grid-column: span 3; --tile: var(--blue-deep); --c: var(--cr-gold); border-color: transparent; }
+.svc-ink h3 { color: #fff; }
+.svc-ink p { color: rgba(255,255,255,.82); }
+.svc-gold { grid-column: span 3; --tile: #fdf6e4; --c: #c9871a; }
+.js .services:not(.is-drawn) .service { opacity: 0; transform: translateY(16px); }
+.service:nth-child(2) { transition-delay: .08s; }
+.service:nth-child(3) { transition-delay: .16s; }
+.service:nth-child(4) { transition-delay: .24s; }
+.service:nth-child(5) { transition-delay: .32s; }
+.service:nth-child(6) { transition-delay: .4s; }
 .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li { font-size: 0.8rem; color: var(--ink); background: var(--mist); border-radius: 999px; padding: 3px 11px; }
 
@@ -259,20 +280,20 @@ section[id], .fit-result, .sent { scroll-margin-top: 84px; }
 .quote { --tile: var(--paper); --q: var(--cr-blue); grid-column: span 2; margin: 0; display: flex; flex-direction: column; background: var(--tile); border: 1px solid rgba(26,28,32,.06); border-radius: 16px; padding: 22px 24px 20px; transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
 .quote::before { content: "\201C"; display: block; height: 28px; margin: -4px 0 2px -2px; font-family: var(--hand); font-size: 3.6rem; line-height: 1; color: var(--q); }
 .quote blockquote { flex: 1; margin: 0 0 16px; }
-.quote blockquote p { margin: 0; font-size: 1.04rem; line-height: 1.5; letter-spacing: -0.01em; }
+.quote blockquote p { margin: 0; font-family: var(--book); font-size: 1.06rem; font-weight: 400; line-height: 1.55; letter-spacing: 0; }
 .quote figcaption { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--graphite); }
 .quote figcaption::before { content: ""; width: 18px; height: 3px; border-radius: 3px; background: var(--q); flex: none; }
 .q-feature { grid-column: span 4; --tile: var(--blue-deep); --q: var(--cr-gold); border-color: transparent; padding: 30px 34px 26px; }
-.q-feature blockquote p { font-size: clamp(1.3rem, 2.1vw, 1.65rem); line-height: 1.38; letter-spacing: -0.02em; font-weight: 350; color: #fff; }
+.q-feature blockquote p { font-style: italic; font-size: clamp(1.35rem, 2.2vw, 1.75rem); line-height: 1.4; letter-spacing: -0.005em; font-weight: 400; color: #fff; }
 .q-feature figcaption { color: rgba(255,255,255,.78); }
 .q-feature::before { font-size: 4.4rem; height: 38px; }
 .quote:nth-child(3), .quote:nth-child(4) { grid-column: span 3; }
 .q-orange { --tile: #fdf1e7; --q: var(--cr-orange); }
 .q-teal { --tile: #eaf3f2; --q: var(--cr-teal); }
-.q-teal blockquote p { font-size: clamp(1.15rem, 1.7vw, 1.35rem); line-height: 1.45; letter-spacing: -0.015em; }
+.q-teal blockquote p { font-style: italic; font-size: clamp(1.2rem, 1.8vw, 1.42rem); line-height: 1.45; }
 .q-blue { --tile: var(--blue-soft); --q: var(--cr-blue); }
 .q-gold { --tile: #fdf6e4; --q: #c9871a; }
-.q-gold blockquote p { font-size: 1.15rem; }
+.q-gold blockquote p { font-style: italic; font-size: 1.2rem; }
 .q-paper:nth-of-type(3) { --q: var(--cr-red); }
 .q-paper:nth-of-type(6) { --q: var(--cr-teal); }
 .js .quotes:not(.is-drawn) .quote { opacity: 0; transform: translateY(16px); }
@@ -426,7 +447,8 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--re
 
 /* Responsive */
 @media (max-width: 1000px) {
-  .services { grid-template-columns: repeat(2, 1fr); }
+  .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .service, .svc-feature, .svc-paper, .svc-ink, .svc-gold { grid-column: span 1; }
   .creds-list { grid-template-columns: repeat(2, 1fr); }
   .creds-list li:nth-child(3) { padding-left: 0; border-left: 0; }
   .creds-list li:nth-child(n+3) { border-top: 1px solid var(--ghost); }
@@ -475,7 +497,8 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--re
 
   .section-head { margin-bottom: 30px; }
   .services, .sheets { grid-template-columns: 1fr; }
-  .service { padding: 18px 0 30px; }
+  .service { padding: 18px 20px 20px; }
+  .service::before { margin-bottom: 10px; }
   .creds-list { grid-template-columns: 1fr; }
   .creds-list li { padding: 11px 0 !important; border-left: 0 !important; }
   .creds-list li + li { border-top: 1px solid var(--ghost); }
