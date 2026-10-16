@@ -80,21 +80,21 @@ function prepInk(root) {
 function drawInk(root) {
   $$(".mk path", root).forEach(p => { p.style.strokeDashoffset = "0"; });
   if (root.classList) root.classList.add("is-drawn");
-  // Numbers that count up alongside their bars
-  $$("[data-count]", root).forEach((el, i) => {
-    const end = Number(el.dataset.count);
-    if (reduceMotion) { el.textContent = `${end}%`; return; }
-    const delay = 150 + i * 300, dur = 1000;
-    let t0;
-    el.textContent = "0%";
-    const step = now => {
-      t0 ??= now;
-      const k = Math.min(1, Math.max(0, (now - t0 - delay) / dur));
-      el.textContent = `${Math.round(end * (1 - Math.pow(1 - k, 3)))}%`;
-      if (k < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  });
+}
+
+/* Count a "22%" label up from zero, starting after `delay` ms */
+function countUp(el, delay = 0, dur = 900) {
+  const end = Number(el.dataset.count);
+  if (reduceMotion) { el.textContent = `${end}%`; return; }
+  el.textContent = "0%";
+  let t0;
+  const step = now => {
+    t0 ??= now;
+    const k = Math.min(1, Math.max(0, (now - t0 - delay) / dur));
+    el.textContent = `${Math.round(end * (1 - Math.pow(1 - k, 3)))}%`;
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 
 // Hand-drawn loops around a phrase. Each loop is drawn from the phrase's real size, so it
@@ -168,6 +168,41 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     });
   }, { rootMargin: "0px 0px -18% 0px", threshold: 0.2 });
   targets.forEach(t => io.observe(t));
+})();
+
+/* ---------- Case study: rocket crosses the years, bars land as it passes ---------- */
+(function journey() {
+  const fig = $("#journey");
+  if (!fig) return;
+  const years = $$(".jy", fig);
+  const wide = window.matchMedia("(min-width: 761px)");
+  const msVar = name => parseFloat(getComputedStyle(fig).getPropertyValue(name)) * 1000;
+
+  function playAll() {
+    fig.classList.add("is-drawn");
+    years.forEach(li => li.classList.add("is-drawn"));
+    const lead = msVar("--lead"), pass = msVar("--dur") / 3.5;
+    $$("[data-count]", fig).forEach((el, i) => countUp(el, lead + pass * (i + 0.5)));
+  }
+  function playOne(li) {
+    li.classList.add("is-drawn");
+    const n = $("[data-count]", li);
+    if (n) countUp(n, 150);
+  }
+
+  if (reduceMotion || !("IntersectionObserver" in window)) { playAll(); return; }
+  if (wide.matches) {
+    const io = new IntersectionObserver(es => {
+      if (es.some(e => e.isIntersecting)) { io.disconnect(); playAll(); }
+    }, { rootMargin: "0px 0px -20% 0px", threshold: 0.35 });
+    io.observe(fig);
+  } else {
+    fig.classList.add("is-drawn"); // phone layout: each year plays on its own
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); playOne(e.target); } });
+    }, { rootMargin: "0px 0px -15% 0px", threshold: 0.5 });
+    years.forEach(li => io.observe(li));
+  }
 })();
 
 /* ---------- Hero: letter tiles in sound boxes ---------- */
