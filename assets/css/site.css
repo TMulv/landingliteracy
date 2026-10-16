@@ -771,7 +771,7 @@ p, li, blockquote { text-wrap: pretty; }
 
 /* The logo rocket: hovers in the hero, rides down as you scroll, lands on the book below */
 .creds { position: relative; z-index: 6; }
-.ship { position: absolute; left: 0; top: 0; z-index: 4; width: var(--ship-w, 120px); pointer-events: none; will-change: transform; visibility: hidden; }
+.ship { position: absolute; left: 0; top: 0; z-index: 4; transform-origin: 50% 68.75%; width: var(--ship-w, 120px); pointer-events: none; will-change: transform; visibility: hidden; }
 .ship.is-ready { visibility: visible; }
 .ship svg { display: block; width: 100%; height: auto; overflow: visible; }
 .ship-tilt { transform: rotate(var(--tilt, 0deg)); transition: transform .25s ease-out; }

@@ -213,39 +213,44 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
   const ship = $("#ship"), start = $("#ship-start"), pad = $("#pad");
   if (!ship || !start || !pad) return;
   const svgH = 160 / 100, baseY = 110 / 160; // svg aspect, and where the nozzle sits in it
-  let A, B, w, h, landed = false, ticking = false;
+  let A, B, s0 = 1, landAt = 1, w, h, landed = false, ticking = false;
 
   function measure() {
-    w = ship.getBoundingClientRect().width || 100;
+    w = ship.offsetWidth || 100; // layout width, unaffected by the scale transform
     h = w * svgH;
     const R = el => { const r = el.getBoundingClientRect(); return { l: r.left + scrollX, t: r.top + scrollY, r: r.right + scrollX, b: r.bottom + scrollY, w: r.width, h: r.height }; };
     const wrap = R($(".hero .wrap")), title = R($(".hero-title")), sub = R($(".hero-sub")), act = R($(".hero-actions"));
     const lines = $$(".hero-line").map(R), titleRight = Math.max(...lines.map(l => l.r));
     const room = wrap.r - titleRight;
     // Start: beside the headline when there's room for the rocket, otherwise beside the intro and buttons
-    if (room >= w * 1.5) A = { x: titleRight + room / 2, y: title.t + title.h * 0.5 + h * 0.35 };
-    else A = { x: wrap.r - w * 0.6, y: act.b };
+    if (room >= w * 1.5) {
+      // Start big beside the headline: as large as the space allows, centered on the hero's text
+      const top = title.t, bot = act.b;
+      s0 = Math.max(1, Math.min(room * 0.8 / w, (bot - top) * 0.82 / h, 2.4));
+      A = { x: titleRight + room / 2, y: (top + bot) / 2 + h * s0 * (baseY - 0.5) };
+    } else { s0 = 0.8; A = { x: wrap.r - w * 0.55, y: act.b + 24 }; } // phones: tucked under the buttons, clear of them
     const p = R(pad);
     B = { x: p.l + p.w / 2, y: p.t + p.h * 0.24 };
+    landAt = Math.max(1, B.y - innerHeight * 0.5); // scroll distance at which it touches down
   }
   const smooth = t => t * t * (3 - 2 * t);
   function place() {
     ticking = false;
-    let y;
-    if (reduceMotion) y = B.y;
-    else y = Math.min(B.y, Math.max(A.y, scrollY + innerHeight * 0.5));
-    const k = B.y > A.y ? (y - A.y) / (B.y - A.y) : 1;
+    // Progress comes from how far you've scrolled: still and crisp at the top, landed when the book is mid-screen
+    const k = reduceMotion ? 1 : Math.min(1, Math.max(0, scrollY / landAt));
+    const y = A.y + (B.y - A.y) * k;
+    const scale = s0 + (1 - s0) * smooth(k);
     // A gentle, natural descent: eases out of the hover, drifts toward the book, settles straight down
     const e = smooth(k);
     const sway = Math.sin(k * Math.PI * 2) * Math.min(18, innerWidth * 0.015) * (1 - k);
     const x = A.x + (B.x - A.x) * e + sway;
     const slope = ((B.x - A.x) * 6 * k * (1 - k)) / Math.max(1, B.y - A.y);
     const tilt = reduceMotion ? 0 : Math.max(-12, Math.min(12, Math.atan(slope) * 180 / Math.PI * 0.6 + sway * 0.25));
-    ship.style.transform = `translate3d(${x - w / 2}px, ${y - h * baseY}px, 0)`;
+    ship.style.transform = `translate3d(${x - w / 2}px, ${y - h * baseY}px, 0) scale(${scale.toFixed(3)})`;
     ship.style.setProperty("--tilt", `${tilt.toFixed(1)}deg`);
     ship.classList.toggle("is-hovering", k <= 0.001);
     // In flight it softens like it's behind frosted glass, then sharpens as it nears the book
-    ship.classList.toggle("is-ghost", !reduceMotion && k > 0.03 && k < 0.88);
+    ship.classList.toggle("is-ghost", !reduceMotion && k > 0.02 && k < 0.88);
     const nowLanded = k >= 0.999;
     if (nowLanded && !landed && !reduceMotion) { pad.classList.remove("touchdown"); void pad.offsetWidth; pad.classList.add("touchdown"); }
     landed = nowLanded;
