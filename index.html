@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png?v=2">
 <link rel="preload" href="assets/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/kalam-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=10">
+<link rel="stylesheet" href="assets/css/site.css?v=11">
 
 <script type="application/ld+json">
 {
@@ -314,6 +314,57 @@
         <li><span class="yr">2026-27</span><p>Program training, data analysis days and curriculum check-ins, on the calendar now.</p></li>
       </ol>
     </div>
+    <div class="results">
+      <div class="results-copy" data-draw>
+        <p class="results-kicker">The results</p>
+        <h3 class="results-title">About <span class="circled">36% fewer<svg class="mk mk-circle" viewBox="0 0 240 90" preserveAspectRatio="none" aria-hidden="true"><path d="M34 16 C 84 4, 192 6, 226 30 C 244 48, 222 78, 150 83 C 80 88, 14 76, 9 50 C 6 30, 40 13, 84 9"/></svg></span> students at risk for reading failure</h3>
+        <p>From 2023-24 to 2025-26, the share of students at risk for reading failure fell from 22% to 14%. That's an 8-percentage-point drop, or about 36% fewer students at risk.</p>
+      </div>
+      <figure class="results-chart" data-draw>
+        <svg viewBox="0 0 520 360" role="img" aria-labelledby="results-svg-title results-svg-desc">
+          <title id="results-svg-title">Students at risk for reading failure</title>
+          <desc id="results-svg-desc">Bar chart: 22% of students at risk in 2023-24, 14% in 2025-26.</desc>
+          <defs>
+            <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="wobble"/>
+              <feDisplacementMap in="SourceGraphic" in2="wobble" scale="6" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+              <feTurbulence type="fractalNoise" baseFrequency="0.9 0.25" numOctaves="2" seed="2" result="grain"/>
+              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.55" result="speck"/>
+              <feComposite in="rough" in2="speck" operator="in"/>
+            </filter>
+            <pattern id="strokes" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
+              <rect width="7" height="2.2" fill="#fff" opacity=".22"/>
+            </pattern>
+          </defs>
+          <path class="chart-base" d="M40 301 C 160 298, 320 303, 490 299"/>
+          <g class="bar bar-before">
+            <g filter="url(#pencil)">
+              <path d="M84 300 L 86 92 Q 140 84, 196 90 L 198 300 Z" fill="#e4572e" stroke="#c9431f" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M84 300 L 86 92 Q 140 84, 196 90 L 198 300 Z" fill="url(#strokes)"/>
+            </g>
+          </g>
+          <g class="bar bar-after">
+            <g filter="url(#pencil)">
+              <path d="M300 300 L 302 168 Q 356 161, 412 167 L 414 300 Z" fill="#1f4fbf" stroke="#173d96" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M300 300 L 302 168 Q 356 161, 412 167 L 414 300 Z" fill="url(#strokes)"/>
+            </g>
+          </g>
+          <text class="bar-val" x="141" y="72" text-anchor="middle" data-count="22">22%</text>
+          <text class="bar-val bar-val-after" x="357" y="149" text-anchor="middle" data-count="14">14%</text>
+          <text class="bar-year" x="141" y="330" text-anchor="middle">2023-24</text>
+          <text class="bar-year" x="357" y="330" text-anchor="middle">2025-26</text>
+          <svg class="mk results-arrow" x="0" y="0" width="520" height="360" viewBox="0 0 520 360" aria-hidden="true"><path d="M196 52 C 250 40, 300 70, 322 118"/><path d="M306 108 L 323 121 L 331 101"/></svg>
+          <text class="results-note" x="248" y="34" aria-hidden="true">−8 points</text>
+          <g class="stars" aria-hidden="true">
+            <path class="star" style="--d:0s" d="M456 118 l3 9 l9 3 l-9 3 l-3 9 l-3 -9 l-9 -3 l9 -3 Z"/>
+            <path class="star" style="--d:.15s" d="M440 196 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 Z"/>
+            <circle class="star" style="--d:.3s" cx="470" cy="160" r="2.6"/>
+            <circle class="star" style="--d:.45s" cx="284" cy="200" r="2.2"/>
+          </g>
+        </svg>
+        <figcaption>Students at risk for reading failure, same district</figcaption>
+      </figure>
+    </div>
     <p class="story-result" data-draw>The district has brought Carly back <span class="circled">every year since 2023<svg class="mk mk-circle" viewBox="0 0 240 90" preserveAspectRatio="none" aria-hidden="true"><path d="M34 16 C 84 4, 192 6, 226 30 C 244 48, 222 78, 150 83 C 80 88, 14 76, 9 50 C 6 30, 40 13, 84 9"/></svg></span>.</p>
     <p class="outcomes" id="outcomes" hidden></p>
   </div>
@@ -473,6 +524,6 @@
   </div>
 </footer>
 
-<script src="assets/js/site.js?v=9" defer></script>
+<script src="assets/js/site.js?v=10" defer></script>
 </body>
 </html>

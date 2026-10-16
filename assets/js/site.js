@@ -79,6 +79,22 @@ function prepInk(root) {
 }
 function drawInk(root) {
   $$(".mk path", root).forEach(p => { p.style.strokeDashoffset = "0"; });
+  if (root.classList) root.classList.add("is-drawn");
+  // Numbers that count up alongside their bars
+  $$("[data-count]", root).forEach((el, i) => {
+    const end = Number(el.dataset.count);
+    if (reduceMotion) { el.textContent = `${end}%`; return; }
+    const delay = 150 + i * 300, dur = 1000;
+    let t0;
+    el.textContent = "0%";
+    const step = now => {
+      t0 ??= now;
+      const k = Math.min(1, Math.max(0, (now - t0 - delay) / dur));
+      el.textContent = `${Math.round(end * (1 - Math.pow(1 - k, 3)))}%`;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
 }
 
 // Hand-drawn loops around a phrase. Each loop is drawn from the phrase's real size, so it
