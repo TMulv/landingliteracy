@@ -791,8 +791,8 @@ p, li, blockquote { text-wrap: pretty; }
 .pad.touchdown .pad-puff circle:nth-child(even) { animation-delay: .08s; }
 @keyframes puff { 0% { opacity: 0; transform: scale(.4); } 30% { opacity: .95; } 100% { opacity: 0; transform: scale(2) translateY(-8px); } }
 @media (min-width: 1100px) {
-  .problem { padding-bottom: clamp(40px, 5vw, 72px); }
-  .pad { position: absolute; right: var(--gutter); bottom: calc(-1 * clamp(40px, 5vw, 72px)); margin: 0; width: clamp(380px, 33vw, 470px); }
+  /* The book sits in the gap between sections, beside "How Carly helps" */
+  .pad { position: absolute; z-index: 2; right: var(--gutter); bottom: calc(-1 * var(--space) - 96px); margin: 0; width: clamp(400px, 35vw, 500px); }
   .ship { --ship-w: clamp(170px, 14vw, 215px); }
   .ship-start { top: 30%; }
 }
