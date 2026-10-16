@@ -377,7 +377,7 @@ section[id], .fit-result, .sent { scroll-margin-top: 84px; }
 .contact-side h2 { margin-bottom: 1rem; }
 .contact-side > p { color: var(--graphite); font-size: 1.12rem; font-weight: 300; }
 .avatar-row { display: flex; align-items: center; gap: 16px; margin-top: 28px; }
-.avatar { width: 120px; height: 120px; border-radius: 50%; flex: none; object-fit: cover; }
+.avatar { width: 72px; height: 72px; border-radius: 50%; flex: none; object-fit: cover; }
 .avatar-note { margin: 0; font-family: var(--hand); color: var(--blue); font-size: 1.2rem; line-height: 1.25; }
 .contact-alt { margin-top: 22px; font-size: 0.98rem; }
 
