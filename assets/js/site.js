@@ -233,7 +233,7 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     ticking = false;
     let y;
     if (reduceMotion) y = B.y;
-    else y = Math.min(B.y, Math.max(A.y, scrollY + innerHeight * 0.42));
+    else y = Math.min(B.y, Math.max(A.y, scrollY + innerHeight * 0.5));
     const k = B.y > A.y ? (y - A.y) / (B.y - A.y) : 1;
     // A gentle, natural descent: eases out of the hover, drifts toward the book, settles straight down
     const e = smooth(k);
