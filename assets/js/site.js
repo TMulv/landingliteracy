@@ -244,6 +244,8 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     ship.style.transform = `translate3d(${x - w / 2}px, ${y - h * baseY}px, 0)`;
     ship.style.setProperty("--tilt", `${tilt.toFixed(1)}deg`);
     ship.classList.toggle("is-hovering", k <= 0.001);
+    // In flight it softens like it's behind frosted glass, then sharpens as it nears the book
+    ship.classList.toggle("is-ghost", !reduceMotion && k > 0.03 && k < 0.88);
     const nowLanded = k >= 0.999;
     if (nowLanded && !landed && !reduceMotion) { pad.classList.remove("touchdown"); void pad.offsetWidth; pad.classList.add("touchdown"); }
     landed = nowLanded;

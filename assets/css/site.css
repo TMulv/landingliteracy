@@ -798,9 +798,12 @@ p, li, blockquote { text-wrap: pretty; }
 }
 @media (max-width: 1099px) {
   .ship { --ship-w: 104px; }
-  .pad { width: 280px; margin-top: 150px; }
+  .pad { width: 280px; margin: 150px auto 0; }
   .ship-start { right: calc(var(--gutter) + 46px); top: auto; bottom: 36px; }
 }
 /* Text sits in front of the rocket, so it flies behind words and cards alike */
 .hero-title, .hero-note, .hero-sub, .hero-actions,
 .problem .kicker-copy, .problem .statement, .problem .statement-follow { position: relative; z-index: 5; }
+/* Rocket in flight: soft, translucent, behind frosted glass */
+.ship svg { transition: filter .5s ease, opacity .5s ease; }
+.ship.is-ghost svg { filter: blur(3px) saturate(.85); opacity: .38; }
