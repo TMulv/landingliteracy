@@ -253,6 +253,11 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     start();
   });
   $("#replay").addEventListener("click", drop);
+  // The logo rocket lands on its book; it flies again with the tiles
+  const lander = $("#lander");
+  const fly = () => { if (!lander) return; lander.classList.remove("is-flying"); void lander.getBoundingClientRect(); lander.classList.add("is-flying"); };
+  fly();
+  $("#replay").addEventListener("click", fly);
   // Tapping the word drops it again (the replay link is hidden on phones).
   tiles.addEventListener("click", () => { if (!tiles.classList.contains("is-dropping")) drop(); });
 })();
