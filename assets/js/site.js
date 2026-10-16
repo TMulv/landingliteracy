@@ -213,24 +213,38 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
   const ship = $("#ship"), start = $("#ship-start"), pad = $("#pad");
   if (!ship || !start || !pad) return;
   const svgH = 160 / 100, baseY = 110 / 160; // svg aspect, and where the nozzle sits in it
-  let A, B, w, h, landed = false, ticking = false;
+  let A, B, C, w, h, landed = false, ticking = false;
 
   function measure() {
     w = ship.getBoundingClientRect().width || 100;
     h = w * svgH;
-    const s = start.getBoundingClientRect(), p = pad.getBoundingClientRect();
-    A = { x: s.left + scrollX, y: s.top + scrollY };
-    B = { x: p.left + scrollX + p.width / 2, y: p.top + scrollY + p.height * 0.24 };
+    const R = el => { const r = el.getBoundingClientRect(); return { l: r.left + scrollX, t: r.top + scrollY, r: r.right + scrollX, b: r.bottom + scrollY, w: r.width, h: r.height }; };
+    const wrap = R($(".hero .wrap")), title = R($(".hero-title")), sub = R($(".hero-sub")), act = R($(".hero-actions"));
+    const lines = $$(".hero-line").map(R), titleRight = Math.max(...lines.map(l => l.r));
+    const room = wrap.r - titleRight;
+    // Start: beside the headline when there's room for the rocket, otherwise beside the intro and buttons
+    if (room >= w * 1.5) A = { x: titleRight + room / 2, y: title.t + title.h * 0.5 + h * 0.35 };
+    else A = { x: wrap.r - w * 0.6, y: act.b };
+    // Middle: tucked behind the credential cards, a little left of center
+    const cr = R($(".creds-list"));
+    C = { x: cr.l + cr.w * 0.6, y: cr.t + cr.h * 0.62 };
+    const p = R(pad);
+    B = { x: p.l + p.w / 2, y: p.t + p.h * 0.24 };
+    if (C.y <= A.y + 20) C = { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 };
   }
+  const smooth = t => t * t * (3 - 2 * t);
   function place() {
     ticking = false;
     let y;
     if (reduceMotion) y = B.y;
     else y = Math.min(B.y, Math.max(A.y, scrollY + innerHeight * 0.42));
     const k = B.y > A.y ? (y - A.y) / (B.y - A.y) : 1;
-    const e = k * k * (3 - 2 * k);
-    const x = A.x + (B.x - A.x) * e;
-    const tilt = reduceMotion ? 0 : Math.sin(k * Math.PI) * 10 * Math.sign(B.x - A.x || 1);
+    // Glide A -> C (behind the cards) -> B (the book), easing at each stop
+    const [P, Q] = y <= C.y ? [A, C] : [C, B];
+    const t = Math.min(1, Math.max(0, (y - P.y) / Math.max(1, Q.y - P.y)));
+    const x = P.x + (Q.x - P.x) * smooth(t);
+    const slope = (Q.x - P.x) * 6 * t * (1 - t) / Math.max(1, Q.y - P.y);
+    const tilt = reduceMotion ? 0 : Math.max(-24, Math.min(24, Math.atan(slope) * 180 / Math.PI * 0.7));
     ship.style.transform = `translate3d(${x - w / 2}px, ${y - h * baseY}px, 0)`;
     ship.style.setProperty("--tilt", `${tilt.toFixed(1)}deg`);
     ship.classList.toggle("is-hovering", k <= 0.001);

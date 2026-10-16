@@ -770,7 +770,8 @@ p, li, blockquote { text-wrap: pretty; }
 }
 
 /* The logo rocket: hovers in the hero, rides down as you scroll, lands on the book below */
-.ship { position: absolute; left: 0; top: 0; z-index: 15; width: var(--ship-w, 120px); pointer-events: none; will-change: transform; visibility: hidden; }
+.creds { position: relative; z-index: 6; }
+.ship { position: absolute; left: 0; top: 0; z-index: 4; width: var(--ship-w, 120px); pointer-events: none; will-change: transform; visibility: hidden; }
 .ship.is-ready { visibility: visible; }
 .ship svg { display: block; width: 100%; height: auto; overflow: visible; }
 .ship-tilt { transform: rotate(var(--tilt, 0deg)); transition: transform .25s ease-out; }
@@ -790,12 +791,16 @@ p, li, blockquote { text-wrap: pretty; }
 .pad.touchdown .pad-puff circle:nth-child(even) { animation-delay: .08s; }
 @keyframes puff { 0% { opacity: 0; transform: scale(.4); } 30% { opacity: .95; } 100% { opacity: 0; transform: scale(2) translateY(-8px); } }
 @media (min-width: 1100px) {
-  .pad { position: absolute; right: var(--gutter); bottom: -10px; margin: 0; width: clamp(280px, 26vw, 360px); }
-  .ship { --ship-w: clamp(130px, 11vw, 170px); }
+  .problem { padding-bottom: clamp(40px, 5vw, 72px); }
+  .pad { position: absolute; right: var(--gutter); bottom: calc(-1 * clamp(40px, 5vw, 72px)); margin: 0; width: clamp(380px, 33vw, 470px); }
+  .ship { --ship-w: clamp(170px, 14vw, 215px); }
   .ship-start { top: 30%; }
 }
 @media (max-width: 1099px) {
-  .ship { --ship-w: 84px; }
-  .pad { width: 210px; margin-top: 104px; }
+  .ship { --ship-w: 104px; }
+  .pad { width: 280px; margin-top: 150px; }
   .ship-start { right: calc(var(--gutter) + 46px); top: auto; bottom: 36px; }
 }
+/* Text sits in front of the rocket, so it flies behind words and cards alike */
+.hero-title, .hero-note, .hero-sub, .hero-actions,
+.problem .kicker-copy, .problem .statement, .problem .statement-follow { position: relative; z-index: 5; }
