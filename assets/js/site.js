@@ -19,6 +19,9 @@ const CONFIG = {
 };
 
 document.documentElement.classList.add("js");
+// Safety net: if anything below fails on an older phone, drop the "js" class so
+// every section shows in its finished state instead of waiting on an animation.
+window.addEventListener("error", () => document.documentElement.classList.remove("js"));
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -205,6 +208,47 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
   }
 })();
 
+/* ---------- The logo rocket: rides down with the scroll and lands on the book ---------- */
+(function rocket() {
+  const ship = $("#ship"), start = $("#ship-start"), pad = $("#pad");
+  if (!ship || !start || !pad) return;
+  const svgH = 160 / 100, baseY = 110 / 160; // svg aspect, and where the nozzle sits in it
+  let A, B, w, h, landed = false, ticking = false;
+
+  function measure() {
+    w = ship.getBoundingClientRect().width || 100;
+    h = w * svgH;
+    const s = start.getBoundingClientRect(), p = pad.getBoundingClientRect();
+    A = { x: s.left + scrollX, y: s.top + scrollY };
+    B = { x: p.left + scrollX + p.width / 2, y: p.top + scrollY + p.height * 0.24 };
+  }
+  function place() {
+    ticking = false;
+    let y;
+    if (reduceMotion) y = B.y;
+    else y = Math.min(B.y, Math.max(A.y, scrollY + innerHeight * 0.42));
+    const k = B.y > A.y ? (y - A.y) / (B.y - A.y) : 1;
+    const e = k * k * (3 - 2 * k);
+    const x = A.x + (B.x - A.x) * e;
+    const tilt = reduceMotion ? 0 : Math.sin(k * Math.PI) * 10 * Math.sign(B.x - A.x || 1);
+    ship.style.transform = `translate3d(${x - w / 2}px, ${y - h * baseY}px, 0)`;
+    ship.style.setProperty("--tilt", `${tilt.toFixed(1)}deg`);
+    ship.classList.toggle("is-hovering", k <= 0.001);
+    const nowLanded = k >= 0.999;
+    if (nowLanded && !landed && !reduceMotion) { pad.classList.remove("touchdown"); void pad.offsetWidth; pad.classList.add("touchdown"); }
+    landed = nowLanded;
+    ship.classList.toggle("is-landed", nowLanded);
+  }
+  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(place); } };
+  const refresh = () => { measure(); place(); };
+  refresh();
+  ship.classList.add("is-ready");
+  addEventListener("scroll", queue, { passive: true });
+  addEventListener("resize", () => requestAnimationFrame(refresh));
+  addEventListener("load", refresh);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+})();
+
 /* ---------- Hero: letter tiles in sound boxes ---------- */
 (function heroTiles() {
   const tiles = $("#tiles");
@@ -237,10 +281,10 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     void tiles.offsetWidth;
     tiles.classList.add("is-dropping"); // Reduce Motion turns this into a fade in the CSS
     const last = tileEls[tileEls.length - 1];
-    last.addEventListener("animationend", function done() {
-      last.removeEventListener("animationend", done);
-      land();
-    });
+    let landed = false;
+    const finish = () => { if (!landed) { landed = true; land(); } };
+    last.addEventListener("animationend", finish, { once: true });
+    setTimeout(finish, 2600); // in case the animation never reports back
   }
 
   // Wait until the page is actually on screen, so a tab opened in the background
@@ -253,11 +297,6 @@ window.addEventListener("resize", () => { clearTimeout(loopTimer); loopTimer = s
     start();
   });
   $("#replay").addEventListener("click", drop);
-  // The logo rocket lands on its book; it flies again with the tiles
-  const lander = $("#lander");
-  const fly = () => { if (!lander) return; lander.classList.remove("is-flying"); void lander.getBoundingClientRect(); lander.classList.add("is-flying"); };
-  fly();
-  $("#replay").addEventListener("click", fly);
   // Tapping the word drops it again (the replay link is hidden on phones).
   tiles.addEventListener("click", () => { if (!tiles.classList.contains("is-dropping")) drop(); });
 })();

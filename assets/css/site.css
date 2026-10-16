@@ -769,36 +769,33 @@ p, li, blockquote { text-wrap: pretty; }
   .q-feature blockquote p { font-size: 1.15rem; }
 }
 
-/* Hero: a logo rocket drifts down from the top and lands on an open book */
-.hero .wrap { position: relative; }
-.lander { display: none; }
+/* The logo rocket: hovers in the hero, rides down as you scroll, lands on the book below */
+.ship { position: absolute; left: 0; top: 0; z-index: 15; width: var(--ship-w, 120px); pointer-events: none; will-change: transform; visibility: hidden; }
+.ship.is-ready { visibility: visible; }
+.ship svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ship-tilt { transform: rotate(var(--tilt, 0deg)); transition: transform .25s ease-out; }
+.ship-line { fill: none; stroke: #1a1c20; stroke-opacity: .5; stroke-width: 1.6; stroke-linejoin: round; filter: url(#crayon); }
+.ship-flame { transform-origin: 0 -2px; animation: flame-flicker .14s ease-in-out infinite alternate; transition: opacity .3s ease; }
+.ship.is-hovering .ship-flame { --flame: .55; }
+.ship.is-landed .ship-flame { opacity: 0; animation: none; }
+.ship.is-hovering .ship-tilt { animation: ship-bob 2.6s ease-in-out infinite; }
+@keyframes ship-bob { 0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); } 50% { transform: translateY(-8px) rotate(var(--tilt, 0deg)); } }
+@keyframes flame-flicker { from { transform: scaleY(calc(var(--flame, 1) * .8)); } to { transform: scaleY(calc(var(--flame, 1) * 1.15)); } }
+.ship-start { position: absolute; right: calc(var(--gutter) + 40px); top: 38%; width: 1px; height: 1px; }
+.problem .wrap { position: relative; }
+.pad { width: 300px; margin: 28px 0 0 auto; }
+.pad svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pad-puff circle { fill: #f3e4c4; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.pad.touchdown .pad-puff circle { animation: puff 1s ease-out both; }
+.pad.touchdown .pad-puff circle:nth-child(even) { animation-delay: .08s; }
+@keyframes puff { 0% { opacity: 0; transform: scale(.4); } 30% { opacity: .95; } 100% { opacity: 0; transform: scale(2) translateY(-8px); } }
 @media (min-width: 1100px) {
-  .lander { display: block; position: absolute; right: var(--gutter); top: -56px; bottom: 0; width: clamp(200px, 19vw, 250px); pointer-events: none; }
-  .lander svg { width: 100%; height: 100%; overflow: visible; }
+  .pad { position: absolute; right: var(--gutter); bottom: -10px; margin: 0; width: clamp(280px, 26vw, 360px); }
+  .ship { --ship-w: clamp(130px, 11vw, 170px); }
+  .ship-start { top: 30%; }
 }
-.rocket-fly { transform: translate(120px, 478px); }
-.lander.is-flying .rocket-fly { animation: rocket-descend 3.4s cubic-bezier(.25,.1,.25,1) .6s both; }
-.lander.is-flying .rocket-tilt { animation: rocket-tilt 3.4s ease-in-out .6s both; }
-.rocket-flames { transform-origin: 0 -4px; animation: flame-flicker .14s ease-in-out infinite alternate; opacity: 0; }
-.lander.is-flying .rocket-flames { opacity: 1; animation: flame-flicker .14s ease-in-out infinite alternate, flame-out .5s ease 3.8s forwards; }
-.lander-puff circle { fill: #f6e7c8; opacity: 0; transform-box: fill-box; transform-origin: center; }
-.lander.is-flying .lander-puff circle { animation: puff 1s ease-out 3.75s both; }
-.lander.is-flying .lander-puff circle:nth-child(odd) { animation-delay: 3.8s; }
-.lstar { fill: #f2b544; opacity: .9; transform-box: fill-box; transform-origin: center; animation: twinkle 3.4s ease-in-out var(--d) infinite; }
-@keyframes rocket-descend {
-  0%   { transform: translate(214px, -40px); }
-  35%  { transform: translate(188px, 150px); }
-  70%  { transform: translate(132px, 380px); }
-  88%  { transform: translate(121px, 462px); }
-  100% { transform: translate(120px, 478px); }
-}
-@keyframes rocket-tilt {
-  0% { transform: rotate(14deg); } 40% { transform: rotate(10deg); } 75% { transform: rotate(3deg); } 100% { transform: rotate(0deg); }
-}
-@keyframes flame-flicker { from { transform: scaleY(.8); } to { transform: scaleY(1.15); } }
-@keyframes flame-out { to { opacity: 0; transform: scaleY(0); } }
-@keyframes puff { 0% { opacity: 0; transform: scale(.4) translateX(0); } 30% { opacity: .9; } 100% { opacity: 0; transform: scale(1.8) translateY(-6px); } }
-@media (prefers-reduced-motion: reduce) {
-  .lander.is-flying .rocket-fly, .lander.is-flying .rocket-tilt { animation: none !important; }
-  .rocket-flames, .lander-puff circle { display: none; }
+@media (max-width: 1099px) {
+  .ship { --ship-w: 84px; }
+  .pad { width: 210px; margin-top: 104px; }
+  .ship-start { right: calc(var(--gutter) + 46px); top: auto; bottom: 36px; }
 }
