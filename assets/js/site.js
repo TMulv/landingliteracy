@@ -67,6 +67,26 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     btn.setAttribute("aria-expanded", "false");
     btn.textContent = "Menu";
   }));
+
+  // Always open at the top. Phones otherwise put you back where you last were on a
+  // reload or a reopened tab, which lands you mid-page with the rocket mid-flight.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  // In-page links scroll to their section without writing "#how" into the address,
+  // so a reload, a reopened tab or a shared link starts at the top too.
+  // Links that arrive from elsewhere with a #section still go straight to it.
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const id = a.getAttribute("href").slice(1);
+    const target = id && document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    if (!target.matches("a, button, input, select, textarea, [tabindex]")) target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true }); // keyboard and screen reader users land in the section too
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  });
 })();
 
 /* ---------- Marker annotations ---------- */
