@@ -581,9 +581,9 @@ input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--re
 .start-tile { --c: var(--cr-red); --soft: #fbe8e3; background: var(--paper); border: 1px solid rgba(26,28,32,.07); border-radius: 16px; padding: 22px 24px 24px; }
 .start-tile:nth-child(2) { --c: var(--cr-orange); --soft: #fdf0e4; }
 .start-tile:nth-child(3) { --c: #c9871a; --soft: #fdf4df; }
-.start-badge { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: var(--soft); margin-bottom: 14px; }
-.start-badge .mk { --crayon: var(--c); width: 44px; height: 44px; }
-.start-badge .mk path { stroke-width: 3.6; }
+.start-badge { display: grid; place-items: center; width: 80px; height: 80px; border-radius: 50%; background: var(--soft); margin-bottom: 14px; }
+.start-badge .mk { --crayon: var(--c); width: 50px; height: 50px; }
+.start-badge .mk path { stroke-width: 2.6; }
 .start-label { font-family: var(--hand); font-size: 1.4rem; line-height: 1.1; color: var(--c); margin: 0 0 6px; }
 .start-tile p:last-child { color: var(--graphite); margin: 0; }
 .journey { --dur: 4.2s; --lead: .3s; --pass: calc(var(--dur) / 3.5); margin: 0; padding: clamp(24px, 3.5vw, 44px) clamp(16px, 2.5vw, 32px) clamp(20px, 3vw, 32px); background: var(--paper); border: 1px solid var(--ghost); border-radius: var(--radius); }
