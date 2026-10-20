@@ -38,6 +38,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
+[tabindex="-1"]:focus { outline: none; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
@@ -162,9 +163,11 @@ button { font: inherit; color: inherit; }
 .kicker-copy { font-size: clamp(1.1rem, 1.6vw, 1.3rem); color: var(--graphite); max-width: 34em; font-weight: 300; }
 .statement { font-size: clamp(2.1rem, 5.2vw, 4.2rem); line-height: 1.08; letter-spacing: -0.035em; margin: 0.6em 0 0.5em; }
 /* Loops are shaped in JS from each phrase's real size; the margins keep them off the neighbors. */
-.circled { position: relative; display: inline-block; white-space: nowrap; margin: 0 0.46em 0 0.34em; }
+.circled { position: relative; display: inline-block; white-space: nowrap; margin: 0 0.3em 0 0.36em; }
+.circled.is-line-start { margin-left: 0; } /* first on its line: no indent, the loop uses the gutter */
 .statement .circled { margin-top: 0.16em; }
-.mk-circle { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+/* Drawing area reaches past the phrase so the loop never leaves it (Safari clips there) */
+.mk-circle { position: absolute; left: -0.75em; top: -0.5em; width: calc(100% + 1.5em); height: calc(100% + 1em); }
 .statement-follow { font-size: clamp(1.1rem, 1.6vw, 1.3rem); max-width: 32em; font-weight: 300; margin: 0; }
 
 /* Section scaffolding */

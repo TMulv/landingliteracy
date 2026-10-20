@@ -67,6 +67,26 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     btn.setAttribute("aria-expanded", "false");
     btn.textContent = "Menu";
   }));
+
+  // Always open at the top. Phones otherwise put you back where you last were on a
+  // reload or a reopened tab, which lands you mid-page with the rocket mid-flight.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  // In-page links scroll to their section without writing "#how" into the address,
+  // so a reload, a reopened tab or a shared link starts at the top too.
+  // Links that arrive from elsewhere with a #section still go straight to it.
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const id = a.getAttribute("href").slice(1);
+    const target = id && document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    if (!target.matches("a, button, input, select, textarea, [tabindex]")) target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true }); // keyboard and screen reader users land in the section too
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  });
 })();
 
 /* ---------- Marker annotations ---------- */
@@ -80,8 +100,19 @@ function prepInk(root) {
     p.style.transition = "";
   });
 }
+// Safari can keep showing a textured stroke as it looked before it was drawn in.
+// Once the draw finishes, re-apply the texture so it repaints in full.
+const isWebKit = /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium|Edg|Android/.test(navigator.userAgent);
 function drawInk(root) {
-  $$(".mk path", root).forEach(p => { p.style.strokeDashoffset = "0"; });
+  $$(".mk path", root).forEach(p => {
+    p.style.strokeDashoffset = "0";
+    if (!isWebKit) return;
+    setTimeout(() => {
+      p.style.filter = "none";
+      p.getBoundingClientRect();
+      requestAnimationFrame(() => { p.style.filter = ""; });
+    }, reduceMotion ? 50 : 1300);
+  });
   if (root.classList) root.classList.add("is-drawn");
 }
 
@@ -106,6 +137,13 @@ function countUp(el, delay = 0, dur = 900) {
 function shapeLoops(root = document) {
   $$("svg.mk-circle", root).forEach(svg => {
     const el = svg.parentElement;
+    // Is the phrase first on its line? Then drop the left margin so it doesn't look indented.
+    el.classList.remove("is-line-start");
+    const block = el.closest("p, h1, h2, h3, h4, li, blockquote") || el.parentElement;
+    const cs = getComputedStyle(block);
+    const lineLeft = block.getBoundingClientRect().left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth);
+    const boxLeft = el.getBoundingClientRect().left - parseFloat(getComputedStyle(el).marginLeft);
+    if (boxLeft - lineLeft < 2) el.classList.add("is-line-start");
     const w = el.offsetWidth, h = el.offsetHeight;
     if (!w || !h) return;
     const fs = parseFloat(getComputedStyle(el).fontSize);
@@ -123,7 +161,7 @@ function shapeLoops(root = document) {
     const R = (B - T) / 2, hh = (inkBot - inkTop) / 2;
     // Oval ends (wider than tall). Each end starts as far in as it can while still
     // clearing the corner of the first or last letter.
-    const rxL = R * 1.5, rxR = R * 1.6;
+    const rxL = R * 1.3, rxR = R * 1.35;
     const room = Math.sqrt(Math.max(0, 1 - (hh / (R - 0.05 * fs)) ** 2));
     let L = rxL * room, X = w - rxR * room;
     if (X < L) L = X = w / 2;
@@ -142,10 +180,13 @@ function shapeLoops(root = document) {
       `C${pt(L + tail * 0.35, T - 0.01 * fs)} ${pt(L + tail * 0.7, T - 0.02 * fs)} ${pt(L + tail, T - 0.015 * fs)}`
     ].join(" ");
 
-    svg.setAttribute("viewBox", `0 0 ${f(w)} ${f(h)}`);
+    // The drawing area is bigger than the phrase (see .mk-circle in the CSS), so the whole
+    // loop sits inside it. Safari clips textured strokes to the drawing area's edges.
+    const sr = svg.getBoundingClientRect(), er = el.getBoundingClientRect();
+    svg.setAttribute("viewBox", `${f(sr.left - er.left)} ${f(sr.top - er.top)} ${f(sr.width)} ${f(sr.height)}`);
     const p = svg.querySelector("path");
     p.setAttribute("d", d);
-    p.style.strokeWidth = `${Math.max(2.2, Math.min(3.6, fs * 0.055)).toFixed(2)}px`;
+    p.style.strokeWidth = `${Math.max(3, Math.min(5, fs * 0.09)).toFixed(2)}px`;
     // Keep the draw-in state: drawn loops stay drawn, pending ones stay hidden.
     const len = Math.ceil(p.getTotalLength()) + 2;
     const drawn = p.style.strokeDashoffset === "0";
